@@ -1,0 +1,126 @@
+.MainContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  overflow: hidden;
+}
+
+.WhiteSpace {
+  flex: 1;
+}
+
+.CreateAccountText {
+  font-size: 25px;
+  color: black;
+  font-weight: bold;
+}
+
+.InputContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: gray;
+  margin-right: 12%;
+}
+
+.ImageContainer {
+  flex: 0 0 40%;
+  margin-left: 6%;
+  margin-top: 3%;
+  margin-bottom: 3%;
+  margin-right: 8%;
+  overflow: hidden;
+}
+
+.Input {
+  padding: 12px;
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 392px;
+  height: 20px;
+  background-color: white;
+  color: gray;
+  outline: none;
+}
+
+.PasswordInputWrapper {
+  position: relative;
+  width: 404px;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 0px;
+}
+
+.PasswordInputWrapper .Input {
+  border: none;
+  box-shadow: none;
+}
+
+.TogglePasswordIcon {
+  flex: 0 0 auto;
+  padding: 5px;
+}
+
+.RegisterNowButton {
+  width: 420px;
+  background-color: #5A6D57;
+  padding: 12px;
+  height: 48px;
+  margin-top: 8px;
+}
+
+.Image {
+  width: 85%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ForgotPasswordButton {
+  background-color: white;
+  border: 0px; 
+  color: #5A6D57;
+  margin: 0px;
+  margin-bottom: 10px;
+  font-size: small;
+  position: relative;
+  right: 138px;
+}
+
+.RedirectLink {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.RedirectToSignIn {
+  background-color: white;
+  border: 0px; 
+  color: #5A6D57;
+  font-weight: bold;
+}
+
+@media (max-width: 1200px) {
+.ImageContainer {
+  display: none;
+}
+.InputContainer {
+  flex: none;
+  width: 100vw;
+  max-width: none;
+  padding: 1.5rem;
+  margin-right: 0%;
+}
+.ForgotPasswordButton {
+    margin-left: 0.5rem;    
+    align-self: auto;       
+  }
+}

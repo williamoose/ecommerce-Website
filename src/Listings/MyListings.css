@@ -1,0 +1,125 @@
+.MainContainer {
+    background-color: white;
+    max-width: 100vw;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.MainWrapper {
+    margin-top: 100px;
+    margin-left: 8%;
+    margin-right: 8%;
+}
+
+.ProfileContainer {
+    max-height: 20vw;
+    height: 130px;
+    width: 75vw;
+    display: flex;
+    background-color: #849f7f;
+    align-items: center;
+    border-radius: 15px;
+    margin-left: 10px
+}
+
+.ProfilePhoto {
+    height: 80px;
+    width: 80px;
+    border-radius: 40px;
+    margin-left: 20px;
+}
+
+.ProfileText {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    gap: 5px;
+}
+
+.Username {
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.ViewProfileButton {
+    background-color: #849f7f;
+    text-align: left;
+    color: white;
+    font-size: 15px;
+    font-weight: 300;
+    padding: 0;
+}
+
+.ViewProfileButton:hover {
+    background-color: #849f7f
+}
+
+.EditProfile {
+    margin-left: auto;
+    margin-right: 40px;
+    border: 1px solid darkgray
+}
+
+.EditProfile:hover {
+    margin-left: auto;
+    margin-right: 40px;
+    border: 1px solid #6D5764;
+    background-color: white;
+    border-radius: 8px;
+    color: #6D5764;
+}
+
+.ListingsHeader {
+    font-size: 30px;
+    font-weight: bold;
+    color: #5A6D57;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+.ListingsContainer {
+    display: flex ;
+    flex-wrap: wrap;
+    gap: 40px;
+    width: 80vw;
+}
+
+.IndividualListing {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 200px;
+    color: black;
+    margin: 0px;
+    padding: 10px;
+    text-align: left;
+}
+
+.IndividualListing:hover {
+    background-color: white;
+    color: black;
+    box-shadow: 5px 5px 8px rgb(0, 0, 0, 0.2);
+}
+
+.ListingImage {
+    height: 200px;
+    width: 100%;
+    margin-bottom: 10px
+}
+
+.ListingName {
+    font-size: 16px;
+    font-weight: 450;
+}
+
+.ListingPrice {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.ListingSize {
+    font-size: 16px;
+    font-weight: 400;
+}
