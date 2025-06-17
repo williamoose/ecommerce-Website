@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import BeachFashion from './assets/BeachFashion.jpg'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router";
-import NavigationTabs from '../NavigationTabs'
+import NavigationTabs from './NavigationTabs'
 import './MyListings.css'
 
 export default function MyListings() {

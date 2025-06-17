@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from './SignUp';
 import SignIn from './SignIn';
 import NavigationTabs from './NavigationTabs';
-import MyListings from './Listings/MyListings'
+import MyListings from './MyListings'
 import './App.css'
 
 function App() {
