@@ -1,0 +1,48 @@
+.Input {
+    border: 1px solid black;
+    border-radius: 8px;
+    width: 392px;
+    background-color: white;
+    color: black;
+    box-sizing: border-box;
+}
+
+h2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--main-color);
+    margin: 8px 0 8px 1px;
+    text-align: left;
+}
+
+.sell {
+    min-height: 60px;
+    width: 100%;
+    font-size: 16px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding-left: 1.2em;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.auth {
+    box-sizing: content-box;
+    padding: 12px;
+    height: 20px;
+}
+
+.price {
+    padding-left: calc(1.2em + 22px)
+}
+
+.Multiline {
+    padding: 20px;
+    font-size: 16px;
+    resize: vertical;
+    overflow: hidden;
+}
+
+::placeholder {
+    color: var(--main-color)
+}

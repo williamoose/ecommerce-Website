@@ -5,49 +5,47 @@
     overflow-y: scroll;
 }
 
-.MainWrapper {
-    margin-top: 100px;
-    margin-left: 8%;
-    margin-right: 8%;
+.ContentContainer {
+    margin: 80px 8% 0px 8%
 }
 
 .ProfileContainer {
-    max-height: 20vw;
-    height: 130px;
-    width: 75vw;
     display: flex;
+    height: 140px;
+    width: 75vw;
     background-color: #849f7f;
     align-items: center;
     border-radius: 15px;
-    margin-left: 10px
+    margin-left: 10px;
+    gap: 20px;
+    font-size: 25px
 }
 
 .ProfilePhoto {
-    height: 80px;
-    width: 80px;
-    border-radius: 40px;
+    height: 66%;
+    width: auto;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1 ;
     margin-left: 20px;
 }
 
 .ProfileText {
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
     gap: 5px;
+    color: white;
 }
 
 .Username {
-    color: white;
-    font-size: 25px;
+    font-size: 1em;
     font-weight: bold;
 }
 
 .ViewProfileButton {
     background-color: #849f7f;
     text-align: left;
-    color: white;
-    font-size: 15px;
-    font-weight: 300;
+    font-size: 0.6em;
+    font-weight: 400;
     padding: 0;
 }
 
@@ -58,25 +56,25 @@
 .EditProfile {
     margin-left: auto;
     margin-right: 40px;
-    border: 1px solid darkgray
+    border: 1px solid darkgray;
+    background-color: white;
+    color: var(--main-color);
+    width: 125px;
+    height: 50px;
+    font-size: 0.65em
 }
 
 .EditProfile:hover {
-    margin-left: auto;
-    margin-right: 40px;
-    border: 1px solid #6D5764;
+    border: 1px solid var(--complementary-color);
     background-color: white;
-    border-radius: 8px;
-    color: #6D5764;
+    color: var(--complementary-color);
 }
 
 .ListingsHeader {
     font-size: 30px;
     font-weight: bold;
-    color: #5A6D57;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 10px;
+    color: var(--main-color);;
+    margin: 20px 0px 20px 10px
 }
 
 .ListingsContainer {
@@ -95,12 +93,16 @@
     margin: 0px;
     padding: 10px;
     text-align: left;
+    background-color: white;
+    color: black;
+    border: none;
 }
 
 .IndividualListing:hover {
     background-color: white;
     color: black;
     box-shadow: 5px 5px 8px rgb(0, 0, 0, 0.2);
+    border: none;
 }
 
 .ListingImage {

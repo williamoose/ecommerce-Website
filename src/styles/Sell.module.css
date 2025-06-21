@@ -1,0 +1,144 @@
+.MainContainer {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin-bottom: 2vh;
+}
+
+.ContentContainer {
+    margin: calc(2 * var(--navigation-tabs-height) + 45px) 6% 0px 6%;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.HeaderContainer {
+    font-size: 25px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    width: 100vw;
+    left: 0;
+    right: 0;
+    padding: 10px 0 10px 92px;
+    margin-top: var(--navigation-tabs-height);
+    border-bottom: 1px solid var(--very-light-gray);
+    border-top: 1px solid var(--very-light-gray);
+    color: black;
+    background-color: white;
+    z-index: 100;
+}
+
+.Header {
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.HeaderSubtext {
+    font-size: 0.6em;
+}
+
+.SelectDisplayPhotosContainer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 15px;
+    width: 30vw;
+    border: 1px solid var(--very-light-gray);
+    box-shadow: 1px 1px 10px rgba(126, 126, 126, 0.2);
+    border-radius: 8px;
+    padding: 25px;
+}
+
+.SelectPhotosHeader {
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--main-color);
+}
+
+.SelectPhotosContainer {
+    width: 30vw;
+    min-height: 200px;
+    padding-bottom: 15px;
+    border: 2px dashed var(--main-color);
+    border-radius: 12px;
+    background-color: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+}
+
+.SelectPhotosButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    width: 140px;
+    background-color: var(--main-color);
+    cursor: pointer;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(90, 109, 87, 0.2);
+    border: none;
+}
+
+.SelectPhotosButton:hover {
+    background-color: var(--darker-main-color);
+}
+
+.SelectPhotosIcon {
+    color: var(--main-color);
+    height: 45px;
+    width: auto;
+    padding: 10px;
+}
+
+.PhotosDisplayContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    gap: 20px;
+}
+
+.IndividualPhoto {
+    height: auto;
+    width: 135px;
+    padding: 8px;
+    border: 1px dotted black;
+    border-radius: 8px;;
+    background-color: var(--very-light-gray);
+}
+
+.InputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 45vw;
+    padding: 25px;
+    border: 1px solid var(--very-light-gray);
+    box-shadow: 1px 1px 10px rgba(126, 126, 126, 0.2);
+    border-radius: 8px;
+    gap: 25px;
+}
+
+.PriceInput {
+    position: relative;
+    display: inline-block;
+    width: inherit;
+}
+
+.DollarSign {
+    position: absolute;
+    left: 1.2em;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+

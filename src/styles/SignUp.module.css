@@ -44,8 +44,7 @@
   width: 392px;
   height: 20px;
   background-color: white;
-  color: gray;
-  outline: none;
+  color: black;
 }
 
 .PasswordInputWrapper {
@@ -70,10 +69,12 @@
 
 .RegisterNowButton {
   width: 420px;
-  background-color: #5A6D57;
+  background-color: var(--main-color);;
   padding: 12px;
   height: 48px;
   margin-top: 8px;
+  color: white;
+  border-radius: 8px;
 }
 
 .Image {
@@ -85,9 +86,18 @@
 .ForgotPasswordButton {
   background-color: white;
   border: 0px; 
-  color: #5A6D57;
-  margin: 0px;
-  margin-bottom: 10px;
+  color: var(--main-color);;
+  margin: 0px 0px 10px 5px;
+  font-size: small;
+  position: relative;
+  right: 138px;
+}
+
+.ForgotPasswordButton:hover {
+  background-color: white;
+  border: 0px; 
+  color: var(--darker-main-color);;
+  margin: 0px 0px 10px 5px;
   font-size: small;
   position: relative;
   right: 138px;
@@ -104,7 +114,14 @@
 .RedirectToSignIn {
   background-color: white;
   border: 0px; 
-  color: #5A6D57;
+  color: var(--main-color);;
+  font-weight: bold;
+}
+
+.RedirectToSignIn:hover {
+  background-color: white;
+  border: 0px; 
+  color: var(--main-color);;
   font-weight: bold;
 }
 
