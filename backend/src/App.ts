@@ -2,8 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import pkg from 'pg';
+import path from 'path';
 
-dotenv.config();
+dotenv.config({ path: path.resolve('./backend/.env') });
 const { Pool } = pkg;
 
 const app = express();
@@ -21,12 +22,44 @@ const pool = new Pool({
   port: Number(process.env.DB_PORT),
 });
 
-// Test DB connection
-pool.query('SELECT NOW()', (err, res) => {
-  if (err) {
-    console.error('Database connection failed:', err);
-  } else {
-    console.log('Database connected:', res.rows[0]);
+// GET API endpoint
+app.get('/api/listings', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, name, price, size, description FROM listings ORDER BY id DESC'
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB query error:', err)
+    res.status(500).json({ error: 'Failed to fetch listings' });
+  }
+})
+
+// POST API endpoint
+app.post('/api/listings', async (req, res) => {
+  const { 
+    category,
+    name,
+    brand,
+    condition,
+    size,
+    description,
+    price
+  } = req.body;
+  
+  try {
+    const result = await pool.query(
+      `INSERT INTO listings 
+      (category, name, brand, condition, size, description, price, photos)
+       VALUES ($1, $2, $3, $4, $5, $6, $7) 
+       RETURNING *`,
+      [category, name, brand, condition, size, description, price]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to create listing'})
   }
 });
 

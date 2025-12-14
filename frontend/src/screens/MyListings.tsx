@@ -1,28 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import BeachFashion from '../assets/BeachFashion.jpg'
 import { useNavigate } from "react-router";
 import styles from '../styles/MyListings.module.css'
 
+type listing = {
+    id: number
+    name: string
+    price: number
+    size: string
+    image: string
+}
+
 export default function MyListings() {
+    const [listings, setListings] = useState<listing[]>([]);
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
+    useEffect(() => {
+        const fetchListings = async () => {
+            try {
+                const res = await fetch('http://localhost:3000/api/listings');
+                if (!res.ok) {
+                    throw new Error('Failed to fetch listings');
+                }
+                const data = await res.json();
+                setListings(data);
+            } catch (error) {
+                console.error('Error fetching listings:', error);       
+            }
+        };
 
-    type listing = {
-        id: number
-        name: string
-        price: number
-        size: string
-        image: string
-    }
-
-    const listings: listing[] = [
-        { id: 1, name: "Piano", price: 100, size: "EU30/US4", image: BeachFashion },
-        { id: 2, name: "Menguin", price: 1000, size: "EU30/US4", image: BeachFashion },
-        { id: 3, name: "Blanket", price: 2, size: "EU30/US4",  image: BeachFashion },
-        { id: 4, name: "Carrot", price: 10000, size: "EU30/US4",  image: BeachFashion },
-        { id: 5, name: "Dino", price: 50, size: "EU30/US4",  image: BeachFashion },
-        { id: 6, name: "Aircon", price: 500, size: "EU30/US4",  image: BeachFashion }
-    ];
+        fetchListings();
+    }, []);
 
     return(
         <div className={styles.MainContainer}>
@@ -41,7 +49,7 @@ export default function MyListings() {
                 <div className={styles.ListingsContainer}>
                     {listings.map(item => (
                         <button key={item.id} className={styles.IndividualListing}>
-                            <img className={styles.ListingImage} src={item.image} alt={item.name} />
+                            <img className={styles.ListingImage} src={BeachFashion} alt={item.name} />
                             <div className={styles.ListingName}>{item.name}</div>
                             <div className={styles.ListingPrice}>${item.price}</div>
                             <div className={styles.ListingSize}>Size: {item.size}</div>

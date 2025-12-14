@@ -27,6 +27,32 @@ export default function Sell() {
         }
     }
 
+    const handleSubmit = async() => {
+        const response = await fetch('http://localhost:3000/api/listings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                category,
+                name,
+                brand,
+                condition,
+                size,
+                description,
+                price: Number(price),
+            }),
+        });
+
+        if (!response.ok) {
+            alert('Failed to list item');
+            return;
+        }
+
+        const data = await response.json();
+        console.log('Listing created:', data);
+    };
+
     return (
         <div className={styles.MainContainer}>
             <div className={styles.HeaderContainer}>
@@ -130,7 +156,12 @@ export default function Sell() {
                         {Number(price) < 0 && 
                             <h2>Price cannot be Negative</h2>}
                     </div>
-                    <button className={styles.ListNowButton}>List Now!</button>
+                    <button 
+                    className={styles.ListNowButton}
+                    onClick={handleSubmit}
+                    >
+                        List Now!
+                    </button>
                 </div>
             </div>
         </div>

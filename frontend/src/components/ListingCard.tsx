@@ -27,7 +27,7 @@ export default function ListingCard({ profilePicture, username, image, name, pri
                 <img src={image} className={styles.ListingImage} />
                 <div className={styles.ListingDescription}>
                     <p>{name}</p>
-                    <div className={styles.ListingPrice}>S{price}</div>
+                    <div className={styles.ListingPrice}>S${price}</div>
                     <p>{condition}</p>
                     <p>Size: {size}</p>
                 </div>
