@@ -3,8 +3,8 @@ import BeachFashion from '../assets/BeachFashion.jpg'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import styles from '../styles/SignUp.module.css'
-import TextInput from '../components/TextInput';
-import PasswordInput from '../components/PasswordInput'
+import TextInput from '../components/ui/TextInput';
+import PasswordInput from '../components/ui/PasswordInput'
 
 export default function SignUp() {
     const [firstName, setFirstName] = useState<string>('')

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import styles from '../styles/PasswordInput.module.css'
+import styles from '../../styles/PasswordInput.module.css'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 type InputProps = {

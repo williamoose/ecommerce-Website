@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import styles from '../styles/Dropdown.module.css'
+import styles from '../../styles/Dropdown.module.css'
 
 type Dropdown = {
     type: string;

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styles from '../styles/Sell.module.css'
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import DropdownMenu from '../components/DropdownMenu'
-import TextInput from '../components/TextInput'
+import DropdownMenu from '../components/ui/DropdownMenu'
+import TextInput from '../components/ui/TextInput'
 
 export default function Sell() {
     const [photos, setPhotos] = useState<string[]>([])

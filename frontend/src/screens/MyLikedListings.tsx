@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styles from '../styles/MyLikedListings.module.css'
-import ListingCard from '../components/ListingCard'
+import ListingCard from '../components/ui/ListingCard'
 
 export default function myLikedListings() {
 

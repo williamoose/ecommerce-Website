@@ -1,6 +1,5 @@
 import React from 'react'
-import styles from '../styles/TextInput.module.css'
-import { PiPlaceholder } from 'react-icons/pi';
+import styles from '../../styles/TextInput.module.css'
 
 type InputProps = {
     multiline?: boolean;

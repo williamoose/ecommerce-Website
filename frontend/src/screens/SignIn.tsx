@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import GirlAtBeach from '../assets/GirlAtBeach2.jpg'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from '../styles/SignUp.module.css'
-import TextInput from '../components/TextInput';
-import PasswordInput from '../components/PasswordInput'
+import TextInput from '../components/ui/TextInput';
+import PasswordInput from '../components/ui/PasswordInput'
 
 export default function SignIn() {
     const [email, setEmail] = useState<string>('')
@@ -57,7 +57,7 @@ export default function SignIn() {
 const RegisterNowButton = ({ onClick }: { onClick: () => void} ) => {
   return (
     <button className={styles.RegisterNowButton} onClick={onClick}>
-    Register Now!
+    Sign In!
     </button>
   )
 }

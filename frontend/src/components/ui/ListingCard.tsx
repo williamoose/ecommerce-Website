@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import styles from '../styles/ListingCard.module.css'
-import BeachFashion from '../assets/BeachFashion.jpg'
-import GirlAtBeach1 from '../assets/GirlAtBeach1.jpg'
+import styles from '../../styles/ListingCard.module.css'
 
 type ListingCard = {
     profilePicture: string

@@ -4,7 +4,7 @@ import { CgProfile, CgHeart, CgShoppingCart, CgSearch } from "react-icons/cg";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { HiOutlineBellAlert } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom"
-import styles from '../styles/NavigationTabs.module.css'
+import styles from '../../styles/NavigationTabs.module.css'
 
 export default function NavigationTabs() {
 
