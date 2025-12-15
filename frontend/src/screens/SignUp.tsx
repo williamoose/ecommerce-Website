@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import BeachFashion from '../assets/BeachFashion.jpg'
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import styles from '../styles/SignUp.module.css'
 import TextInput from '../components/ui/TextInput';
 import PasswordInput from '../components/ui/PasswordInput'
+import { useAuth } from "../contexts/AuthContext";
 
 export default function SignUp() {
     const [firstName, setFirstName] = useState<string>('')
@@ -13,16 +13,39 @@ export default function SignUp() {
     const [password, setPassword] = useState<string>('')
     const [confirmedPassword, setConfirmedPassword] = useState<string>('')
 
-    let navigate = useNavigate();
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
-    const handleRegister = () => {
-        !firstName ||
-        !lastName ||
-        !email ||
-        !password 
-        ? alert('Please fill in all required fields')
-        : navigate('/MyListings')
-    }
+    const handleRegister = async () => {
+        if (password !== confirmedPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        if (!firstName || !lastName || !email || !password ) {
+            alert('Please fill in all required fields');
+            return;
+        }
+
+        const res = await fetch('http://localhost:3000/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ firstName, lastName,  email, password }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert("Server returned invalid response");
+            return;
+        }
+
+        login(data.token);
+
+        navigate("/MyListings");
+    };
 
     return(
         <div className={styles.MainContainer}>

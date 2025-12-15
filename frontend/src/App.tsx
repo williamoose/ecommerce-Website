@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -17,7 +17,6 @@ function App() {
     return (
         <AuthProvider>
             <BrowserRouter>
-                <NavigationTabs />
                 <Routes>
                     // Public Routes
                     <Route index element={<SignIn />} />
@@ -26,14 +25,23 @@ function App() {
 
                     // Protected Routes
                     <Route element={<ProtectedRoute />}>
-                        <Route path="/MyListings" element={<MyListings />} />
-                        <Route path="/Sell" element={<Sell />} />
-                        <Route path="/MyLikedListings" element={<MyLikedListings />} />
+                        <Route element={<ProtectedLayout />}>
+                            <Route path="/MyListings" element={<MyListings />} />
+                            <Route path="/Sell" element={<Sell />} />
+                            <Route path="/MyLikedListings" element={<MyLikedListings />} />
+                        </Route>
                     </Route>
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
     )
 }
+
+const ProtectedLayout = () => (
+    <>
+        <NavigationTabs />
+        <Outlet />
+    </>
+);
 
 export default App

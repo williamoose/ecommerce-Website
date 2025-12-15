@@ -1,5 +1,5 @@
 import React from 'react'
-import Logo from '../assets/Logo.png'
+import Logo from '../../assets/Logo.png'
 import { CgProfile, CgHeart, CgShoppingCart, CgSearch } from "react-icons/cg";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { HiOutlineBellAlert } from "react-icons/hi2";

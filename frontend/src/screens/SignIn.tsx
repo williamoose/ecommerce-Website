@@ -1,23 +1,42 @@
 import { useNavigate } from "react-router-dom"
 import React, { useState } from 'react'
 import GirlAtBeach from '../assets/GirlAtBeach2.jpg'
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from '../styles/SignUp.module.css'
 import TextInput from '../components/ui/TextInput';
 import PasswordInput from '../components/ui/PasswordInput'
+import { useAuth } from "../contexts/AuthContext";
 
 export default function SignIn() {
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
 
-    let navigate = useNavigate();
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
-    const handleSignIn = () => {
-        return(
-            !email || !password 
-            ? alert('Please fill in all required fields')
-            : alert('Sign In Success!')
-        )
+    const handleSignIn = async () => {
+        if (!email || !password) {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        const res = await fetch('http://localhost:3000/api/signin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.message);
+            return;
+        }
+        
+        login(data.token);
+
+        navigate("/MyListings");
     }
 
     return(
@@ -54,7 +73,7 @@ export default function SignIn() {
 }
 
 
-const RegisterNowButton = ({ onClick }: { onClick: () => void} ) => {
+const RegisterNowButton = ({ onClick }: {onClick: () => void}) => {
   return (
     <button className={styles.RegisterNowButton} onClick={onClick}>
     Sign In!
