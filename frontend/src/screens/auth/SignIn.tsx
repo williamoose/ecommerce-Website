@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom"
 import React, { useState } from 'react'
-import GirlAtBeach from '../assets/GirlAtBeach2.jpg'
-import styles from '../styles/SignUp.module.css'
-import TextInput from '../components/ui/TextInput';
-import PasswordInput from '../components/ui/PasswordInput'
-import { useAuth } from "../contexts/AuthContext";
+import GirlAtBeach from '../../assets/GirlAtBeach2.jpg'
+import styles from '../../styles/SignUp.module.css'
+import TextInput from '../../components/ui/TextInput';
+import PasswordInput from '../../components/ui/PasswordInput'
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function SignIn() {
     const [email, setEmail] = useState<string>('')
@@ -37,6 +37,8 @@ export default function SignIn() {
         login(data.token);
 
         navigate("/MyListings");
+
+        console.log('User signed in successfully:', data);
     }
 
     return(

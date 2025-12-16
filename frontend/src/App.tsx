@@ -5,15 +5,15 @@ import { AuthProvider } from "./contexts/AuthContext";
 
 import './styles/App.css'
 
-import SignUp from './screens/SignUp';
-import SignIn from './screens/SignIn';
+import SignUp from './screens/auth/SignUp';
+import SignIn from './screens/auth/SignIn';
 import MyListings from './screens/MyListings'
 import Sell from './screens/Sell'
 import MyLikedListings from './screens/MyLikedListings';
 import NavigationTabs from './components/ui/NavigationTabs';
+import Discover from './screens/Discover';
 
 function App() {
-
     return (
         <AuthProvider>
             <BrowserRouter>
@@ -26,6 +26,7 @@ function App() {
                     // Protected Routes
                     <Route element={<ProtectedRoute />}>
                         <Route element={<ProtectedLayout />}>
+                            <Route path="/Discover" element={<Discover />} />
                             <Route path="/MyListings" element={<MyListings />} />
                             <Route path="/Sell" element={<Sell />} />
                             <Route path="/MyLikedListings" element={<MyLikedListings />} />

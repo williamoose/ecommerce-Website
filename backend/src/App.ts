@@ -1,10 +1,16 @@
 import express from 'express';
+import type { Request, Response, NextFunction } from "express";
 import cors from 'cors';
 import dotenv from 'dotenv';
 import pkg from 'pg';
 import path from 'path';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import multer from 'multer';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve('./backend/.env') });
 const { Pool } = pkg;
@@ -15,6 +21,45 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); // serve uploaded images
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, path.join(__dirname, '../uploads')),
+  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname),
+});
+const upload = multer({ storage });
+
+interface AuthenticatedRequest extends Request {
+  user?: { id: number };
+}
+
+export const authenticate = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  const parts = authHeader.split(' ');
+  
+  if (parts.length !== 2 || parts[0] !== 'Bearer') {
+    return res.status(401).json({ message: "Invalid token format" });
+  }
+
+  const token = parts[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Missing token" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
+    (req as AuthenticatedRequest).user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+};
 
 // Create a Postgres pool
 const pool = new Pool({
@@ -25,11 +70,19 @@ const pool = new Pool({
 });
 
 // GET API endpoint
-app.get('/api/listings', async (req, res) => {
+app.get('/api/listings', authenticate, async (req: AuthenticatedRequest, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const id = req.user.id;
+
   try {
     const result = await pool.query(
-      'SELECT id, name, price, size, description FROM listings ORDER BY id DESC'
+      'SELECT id, name, price, size, description, image_url FROM listings WHERE user_id = $1 ORDER BY id DESC',
+      [id]
     );
+
     res.json(result.rows);
   } catch (err) {
     console.error('DB query error:', err)
@@ -37,8 +90,25 @@ app.get('/api/listings', async (req, res) => {
   }
 })
 
+app.get('/api/discover', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, name, price, size, condition, image_url FROM listings ORDER BY RANDOM()`
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch listings' });
+  }
+});
+
 // POST API endpoint
-app.post('/api/listings', async (req, res) => {
+app.post('/api/listings', authenticate, upload.array('images', 5), async (req: AuthenticatedRequest, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  const id = req.user!.id;
+
   const { 
     category,
     name,
@@ -49,21 +119,23 @@ app.post('/api/listings', async (req, res) => {
     price
   } = req.body;
   
+  const imageUrls = (req.files as Express.Multer.File[]).map(file => `/uploads/${file.filename}`);
+
   try {
     const result = await pool.query(
       `INSERT INTO listings 
-      (category, name, brand, condition, size, description, price)
-       VALUES ($1, $2, $3, $4, $5, $6, $7) 
-       RETURNING *`,
-      [category, name, brand, condition, size, description, price]
+       (user_id, category, name, brand, condition, size, description, price, image_url)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+      [req.user.id, category, name, brand, condition, size, description, price, imageUrls[0] || null]
     );
 
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to create listing'})
+    res.status(500).json({ error: 'Failed to create listing' });
   }
 });
+
 
 // Sign Up
 app.post('/api/signup', async (req, res) => {

@@ -13,7 +13,7 @@ export default function NavigationTabs() {
     return(
         <div className={styles.NavigationTabsContainer}>
             <img className={styles.Logo} src={Logo} alt="Logo" />
-            <button className={styles.Sections}>Discover</button>
+            <button className={styles.Sections} onClick={() => navigate('/Discover')}>Discover</button>
             <button className={styles.Sections}>New Arrivals</button>
             <button className={styles.Sections}>Categories</button>
             <div className={styles.SearchBarContainer}>

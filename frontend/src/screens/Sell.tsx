@@ -3,45 +3,60 @@ import styles from '../styles/Sell.module.css'
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import DropdownMenu from '../components/ui/DropdownMenu'
 import TextInput from '../components/ui/TextInput'
+import { useNavigate } from "react-router";
 
 export default function Sell() {
-    const [photos, setPhotos] = useState<string[]>([])
+    const [photos, setPhotos] = useState<File[]>([])
     const [category, setCategory] = useState<string>('')
     const [name, setName] = useState<string>('')
     const [brand, setBrand] = useState<string>('')
     const [condition, setCondition] = useState<string>('')
     const [size, setSize] = useState<string>('')
     const [description, setDescription] = useState<string>('')
-    const [price, setPrice] = useState<string>('')
+    const [price, setPrice] = useState<string>('0')
 
     const categories: string[] = ['Dresses', 'Skirts', 'Pants', 'Shirts', 'Socks', 'Underwear', 'Jackets']
     const conditions: string[] = ['Brand New', 'Like New', 'Lightly Used', 'Well Used', 'Heavily Used']
     const sizes: string[] = ['XXXS', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL']
 
-    const handleSelectedPhotos = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
+    const navigate = useNavigate();
 
-        if (files) {
-            const photosArray = Array.from(files).map(file => URL.createObjectURL(file))
-            setPhotos(photos.concat(photosArray))
+    const handleSelectedPhotos = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+            setPhotos(Array.from(event.target.files));
         }
-    }
+    };
 
     const handleSubmit = async() => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            alert('You must be signed in to list an item');
+            return;
+        }
+
+        if (!category || !name || !brand || !condition || !size || !description || !price) {
+            alert('Please fill in all required fields');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('category', category);
+        formData.append('name', name);
+        formData.append('brand', brand);
+        formData.append('condition', condition);
+        formData.append('size', size);
+        formData.append('description', description);
+        formData.append('price', price);
+
+        photos.forEach(photo => formData.append('images', photo));
+
         const response = await fetch('http://localhost:3000/api/listings', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({
-                category,
-                name,
-                brand,
-                condition,
-                size,
-                description,
-                price: Number(price),
-            }),
+            body: formData,
         });
 
         if (!response.ok) {
@@ -51,6 +66,8 @@ export default function Sell() {
 
         const data = await response.json();
         console.log('Listing created:', data);
+
+        navigate('/MyListings');
     };
 
     return (
@@ -82,7 +99,7 @@ export default function Sell() {
                         {photos.map((photoURL, index) =>(
                             <div key={index} className={styles.IndividualPhoto}>
                                 <img 
-                                src={photoURL}
+                                src={URL.createObjectURL(photoURL)}
                                 width='100%'
                                 height='100%'
                                 alt={`preview-${index}`}

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import BeachFashion from '../assets/BeachFashion.jpg'
+import BeachFashion from '../../assets/BeachFashion.jpg'
 import { useNavigate } from "react-router";
-import styles from '../styles/SignUp.module.css'
-import TextInput from '../components/ui/TextInput';
-import PasswordInput from '../components/ui/PasswordInput'
-import { useAuth } from "../contexts/AuthContext";
+import styles from '../../styles/SignUp.module.css'
+import TextInput from '../../components/ui/TextInput';
+import PasswordInput from '../../components/ui/PasswordInput'
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function SignUp() {
     const [firstName, setFirstName] = useState<string>('')
@@ -45,6 +45,8 @@ export default function SignUp() {
         login(data.token);
 
         navigate("/MyListings");
+
+        console.log('User registered successfully:', data);
     };
 
     return(

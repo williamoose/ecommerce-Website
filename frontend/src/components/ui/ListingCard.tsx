@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from '../../styles/ListingCard.module.css'
 
 type ListingCard = {
-    profilePicture: string
-    username: string
-    image: string
+    profilePicture: string | undefined
+    username: string 
+    image: string | undefined
     name: string
     price: string
     condition: string
@@ -22,7 +22,7 @@ export default function ListingCard({ profilePicture, username, image, name, pri
                         <h3>2 years ago</h3>
                     </div>
                 </div>
-                <img src={image} className={styles.ListingImage} />
+                <img src={`http://localhost:3000${image}`} className={styles.ListingImage} />
                 <div className={styles.ListingDescription}>
                     <p>{name}</p>
                     <div className={styles.ListingPrice}>S${price}</div>

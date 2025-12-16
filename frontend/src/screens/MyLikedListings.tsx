@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from '../styles/MyLikedListings.module.css'
 import ListingCard from '../components/ui/ListingCard'
 
-export default function myLikedListings() {
+export default function MyLikedListings() {
 
 const listings = [
   { id: 1, name: 'Denim Jacket', price: '$45', condition: 'Lightly Used', size: 'M', username: 'clotheslover21', image: 'https://picsum.photos/seed/jacket1/300/250', profilePicture: 'https://picsum.photos/seed/profile1/40/40' },
