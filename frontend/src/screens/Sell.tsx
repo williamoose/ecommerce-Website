@@ -51,7 +51,7 @@ export default function Sell() {
 
         photos.forEach(photo => formData.append('images', photo));
 
-        const response = await fetch('http://localhost:3000/api/listings', {
+        const response = await fetch('http://localhost:3000/api/listings/mylistings', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,

@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start:frontend": "npm run dev",
-    "start:backend": "npx ts-node backend/src/app.ts",
+    "start:backend": "cd backend && npx tsc && node dist/app.js",
     "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
   },
   "dependencies": {

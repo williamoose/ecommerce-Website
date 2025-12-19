@@ -23,7 +23,7 @@ export default function Discover() {
     useEffect(() => {
         const fetchListings = async () => {
             try {
-                const res = await fetch('http://localhost:3000/api/discover');
+                const res = await fetch('http://localhost:3000/api/listings/discover');
 
                 if (!res.ok) {
                     throw new Error('Failed to fetch listings');
@@ -49,11 +49,9 @@ export default function Discover() {
                         return (
                             <ListingCard
                             key={listing.id}
-                            profilePicture={BeachFashion}
-                            // profilePicture={listing.profilePicture}
-                            username="williamoose"
-                            // username={listing.username}
-                            image={listing.image_url}
+                            profilePicture_url={listing.profilePicture}
+                            username={listing.username}
+                            image_url={listing.image_url}
                             name={listing.name}
                             price={listing.price}
                             condition={listing.condition}

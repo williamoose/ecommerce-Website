@@ -2,27 +2,27 @@ import React from 'react'
 import styles from '../../styles/ListingCard.module.css'
 
 type ListingCard = {
-    profilePicture: string | undefined
+    profilePicture_url: string | undefined
     username: string 
-    image: string | undefined
+    image_url: string | undefined
     name: string
     price: string
     condition: string
     size: string
 }
 
-export default function ListingCard({ profilePicture, username, image, name, price, condition, size }: ListingCard) {
+export default function ListingCard({ profilePicture_url, username, image_url, name, price, condition, size }: ListingCard) {
     return(
         <div className={styles.MainContainer}>
             <div className={styles.ContentContainer}>
                 <div className={styles.ProfileContainer}>
-                    <img src={profilePicture} className={styles.ProfilePicture} />
+                    <img src={`http://localhost:3000${profilePicture_url}`} className={styles.ProfilePicture} />
                     <div className={styles.ProfileDetails}>
                         <h2>{username}</h2>
                         <h3>2 years ago</h3>
                     </div>
                 </div>
-                <img src={`http://localhost:3000${image}`} className={styles.ListingImage} />
+                <img src={`http://localhost:3000${image_url}`} className={styles.ListingImage} />
                 <div className={styles.ListingDescription}>
                     <p>{name}</p>
                     <div className={styles.ListingPrice}>S${price}</div>

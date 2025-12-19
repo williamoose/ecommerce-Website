@@ -1,0 +1,88 @@
+import express from "express";
+import { pool } from "../db/pool.js";
+import { authenticate } from "../middleware/authenticate.js";
+import type { AuthenticatedRequest } from "../middleware/authenticate.js";
+import { upload } from "../upload/multer.js";
+
+const router = express.Router();
+
+// GET user listings
+router.get('/mylistings', authenticate, async (req: AuthenticatedRequest, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const id = req.user.id;
+
+  try {
+    const result = await pool.query(
+      'SELECT id, name, price, size, description, image_url FROM listings WHERE user_id = $1 ORDER BY id DESC',
+      [id]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB query error:', err)
+    res.status(500).json({ error: 'Failed to fetch listings' });
+  }
+})
+
+// GET discover listings
+router.get('/discover', async (req, res) => {
+  try {
+    const result = await pool.query(
+        `SELECT 
+            l.id,
+            l.name,
+            l.price,
+            l.size,
+            l.condition,
+            l.image_url,
+            u.username,
+            u.image_url
+        FROM listings l
+        INNER JOIN users u ON l.user_id = u.id
+        ORDER BY RANDOM()`    
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch listings' });
+  }
+});
+
+// POST user listing
+router.post('/mylistings', authenticate, upload.array('images', 5), async (req: AuthenticatedRequest, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  const id = req.user!.id;
+
+  const { 
+    category,
+    name,
+    brand,
+    condition,
+    size,
+    description,
+    price
+  } = req.body;
+  
+  const image_urls = (req.files as Express.Multer.File[]).map(file => `/uploads/${file.filename}`);
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO listings 
+       (user_id, category, name, brand, condition, size, description, price, image_url)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+      [req.user.id, category, name, brand, condition, size, description, price, image_urls[0] || null]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to create listing' });
+  }
+});
+
+export default router;

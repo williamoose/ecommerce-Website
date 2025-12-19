@@ -9,7 +9,7 @@ type Listing = {
     name: string
     price: string
     size: string
-    image: string
+    image_url: string
 }
 
 export default function MyListings() {
@@ -37,7 +37,7 @@ export default function MyListings() {
             formData.append('profilePhoto', file);
 
             try {
-                const res = await fetch('http://localhost:3000/api/user/profile-photo', {
+                const res = await fetch('http://localhost:3000/api/users/profile-photo', {
                     method: 'PATCH',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ export default function MyListings() {
             }
 
             try {
-                const res = await fetch('http://localhost:3000/api/listings', {
+                const res = await fetch('http://localhost:3000/api/listings/mylistings', {
                     headers:{
                         Authorization: `Bearer ${token}`
                     },
@@ -131,7 +131,7 @@ export default function MyListings() {
                 <div className={styles.ListingsContainer}>
                     {listings.map(item => (
                         <button key={item.id} className={styles.IndividualListing}>
-                            <img className={styles.ListingImage} src={BeachFashion} alt={item.name} />
+                            <img className={styles.ListingImage} src={`http://localhost:3000${item.image_url}`} alt={item.name} />
                             <div className={styles.ListingName}>{item.name}</div>
                             <div className={styles.ListingPrice}>${item.price}</div>
                             <div className={styles.ListingSize}>Size: {item.size}</div>
