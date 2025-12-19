@@ -136,23 +136,57 @@ app.post('/api/listings', authenticate, upload.array('images', 5), async (req: A
   }
 });
 
-
-// Sign Up
-app.post('/api/signup', async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
-
-  if (!firstName || !lastName || !email || !password) {
-    return res.status(400).json({ message: "All fields required" });
+app.patch('/api/user/profile-photo', authenticate, upload.single('profilePhoto'), async (req: AuthenticatedRequest, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file uploaded' });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  const id = req.user!.id;
+
+  const profilePhotoUrl = `/uploads/${req.file.filename}`; 
 
   try {
     const result = await pool.query(
-      `INSERT INTO users (first_name, last_name, email, password) 
-        VALUES ($1, $2, $3, $4) 
-        RETURNING id, first_name, last_name, email`,
-      [firstName, lastName, email, hashedPassword]      
+      `UPDATE users SET image_url = $1 WHERE id = $2 RETURNING id, image_url`,
+      [profilePhotoUrl, id]
+    );
+
+    res.json({ message: 'Profile photo updated', user: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to update profile photo' });
+  }
+});
+
+
+// Sign Up
+app.post('/api/signup', async (req, res) => {
+  console.log('Signup request body:', req.body);
+  const { firstName, lastName, username, email, password } = req.body;
+
+  if (!firstName || !lastName || !username || !email || !password) {
+    return res.status(400).json({ message: "All fields required" });
+  }
+
+  try {
+    /* const existing = await pool.query(
+      'SELECT id FROM users WHERE username = $1 OR email = $2',
+      [username, email]
+    );
+    if (existing.rows.length > 0) {
+      return res.status(400).json({ message: 'Username or email already exists' });
+    } */
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const result = await pool.query(
+      `INSERT INTO users (first_name, last_name, username, email, password) 
+        VALUES ($1, $2, $3, $4, $5) 
+        RETURNING id, first_name, last_name, username, email`,
+      [firstName, lastName, username, email, hashedPassword]      
     ); 
 
     const user = result.rows[0];
@@ -160,7 +194,16 @@ app.post('/api/signup', async (req, res) => {
       expiresIn: '1h',
     });
 
-    res.json({ token });
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        firstName: user.first_name,   
+        lastName: user.last_name,
+        username: user.username,
+        email: user.email,
+      }
+    });  
   } catch (err: any) {
     console.error(err);
     res.status(500).json({ message: 'Failed to sign up user' });
@@ -195,7 +238,17 @@ app.post('/api/signin', async (req, res) => {
       expiresIn: '1h',
     });
 
-    res.json({ token });
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        firstName: user.first_name,   
+        lastName: user.last_name,
+        username: user.username,
+        email: user.email,
+        image_url: user.image_url
+      }
+    });    
   } catch (err: any) {
     console.error(err);
     res.status(500).json(

@@ -77,6 +77,11 @@
     color: var(--darker-main-color);
 }
 
+.LogoutIcon {
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
 .SellButton {
     background-color: var(--main-color);
     color: white;

@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
+import Logo from '../../assets/Logo.png'
 import BeachFashion from '../../assets/BeachFashion.jpg'
 import { useNavigate } from "react-router";
-import styles from '../../styles/SignUp.module.css'
+import styles from '../../styles/auth/SignUp.module.css'
 import TextInput from '../../components/ui/TextInput';
-import PasswordInput from '../../components/ui/PasswordInput'
+import PasswordInput from '../../components/ui/auth/PasswordInput'
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function SignUp() {
     const [firstName, setFirstName] = useState<string>('')
     const [lastName, setLastName] = useState<string>('')
+    const [username, setUsername] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [confirmedPassword, setConfirmedPassword] = useState<string>('')
@@ -22,7 +24,7 @@ export default function SignUp() {
             return;
         }
 
-        if (!firstName || !lastName || !email || !password ) {
+        if (!firstName || !lastName || !username || !email || !password ) {
             alert('Please fill in all required fields');
             return;
         }
@@ -32,7 +34,7 @@ export default function SignUp() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ firstName, lastName,  email, password }),
+            body: JSON.stringify({ firstName, lastName, username, email, password }),
         });
 
         const data = await res.json();
@@ -42,7 +44,7 @@ export default function SignUp() {
             return;
         }
 
-        login(data.token);
+        login(data.token, data.user);
 
         navigate("/MyListings");
 
@@ -55,6 +57,7 @@ export default function SignUp() {
                 <img className={styles.Image} src={BeachFashion} />
             </div>
             <div className={styles.InputContainer}>
+                <img className={styles.Logo} src={Logo} alt="Logo" />
                 <h1 className={styles.CreateAccountText}>
                 Create Account
                 </h1>
@@ -62,11 +65,18 @@ export default function SignUp() {
                 value={firstName || "First Name"}
                 inputType={'text'} 
                 onChange={setFirstName} 
-                purpose={'auth'}/>
+                purpose={'auth'}
+                />
                 <TextInput 
                 value={lastName || "Last Name"}
                 inputType={'text'} 
                 onChange={setLastName} 
+                purpose={'auth'}
+                />
+                <TextInput 
+                value={username || "Username"}
+                inputType={'text'} 
+                onChange={setUsername} 
                 purpose={'auth'}
                 />
                 <TextInput 

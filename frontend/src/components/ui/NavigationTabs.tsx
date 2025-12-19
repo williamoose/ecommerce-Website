@@ -1,14 +1,19 @@
 import React from 'react'
 import Logo from '../../assets/Logo.png'
-import { CgProfile, CgHeart, CgShoppingCart, CgSearch } from "react-icons/cg";
-import { IoChatbubbleOutline } from "react-icons/io5";
-import { HiOutlineBellAlert } from "react-icons/hi2";
+import { CgProfile, CgHeart, CgShoppingCart, CgSearch, CgLogOut } from "react-icons/cg";
 import { useNavigate } from "react-router-dom"
+import { useAuth } from '../../contexts/AuthContext';
 import styles from '../../styles/NavigationTabs.module.css'
 
 export default function NavigationTabs() {
 
+    const { logout } = useAuth();
     let navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/SignIn');
+    }
 
     return(
         <div className={styles.NavigationTabsContainer}>
@@ -30,13 +35,14 @@ export default function NavigationTabs() {
                 <button className={styles.Icon}>
                     <CgShoppingCart />
                 </button>
-                <button className={styles.Icon}>
-                    <HiOutlineBellAlert />
-                </button>
-                <button className={styles.Icon}>
-                    <IoChatbubbleOutline />
-                </button>
                 <button className={styles.SellButton} onClick={() => navigate('/Sell')}>Sell</button>
+                <button
+                className={`${styles.Icon} ${styles.LogoutIcon}`}
+                onClick={handleLogout}
+                >
+                    <CgLogOut />
+                </button>
+
             </div>
         </div>
     )

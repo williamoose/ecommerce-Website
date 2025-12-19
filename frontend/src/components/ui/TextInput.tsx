@@ -7,7 +7,7 @@ type InputProps = {
     value: string;
     onChange: (text: string) => void;
     purpose: 'auth' | 'sell';
-    modifiers?: 'price';
+    modifiers?: string;
 }
 
 const HandleMultilineChange = (

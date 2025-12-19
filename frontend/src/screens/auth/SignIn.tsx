@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom"
 import React, { useState } from 'react'
 import GirlAtBeach from '../../assets/GirlAtBeach2.jpg'
-import styles from '../../styles/SignUp.module.css'
+import Logo from '../../assets/Logo.png'
+import styles from '../../styles/auth/SignUp.module.css'
 import TextInput from '../../components/ui/TextInput';
-import PasswordInput from '../../components/ui/PasswordInput'
+import PasswordInput from '../../components/ui/auth/PasswordInput'
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function SignIn() {
@@ -34,7 +35,7 @@ export default function SignIn() {
             return;
         }
         
-        login(data.token);
+        login(data.token, data.user);
 
         navigate("/MyListings");
 
@@ -47,6 +48,7 @@ export default function SignIn() {
                 <img className={styles.Image} src={GirlAtBeach} alt="Girl at Beach" />
             </div>
             <div className={styles.InputContainer}>
+                <img className={styles.Logo} src={Logo} alt="Logo" />
                 <h1 className={styles.CreateAccountText}>
                 Log In
                 </h1>

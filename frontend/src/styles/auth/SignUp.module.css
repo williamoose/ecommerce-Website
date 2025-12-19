@@ -11,10 +11,16 @@
   flex: 1;
 }
 
+.Logo {
+  width: 300px;
+  height: auto;
+}
+
 .CreateAccountText {
   font-size: 25px;
   color: black;
   font-weight: bold;
+  margin-bottom: 15px;
 }
 
 .InputContainer {
@@ -72,7 +78,7 @@
   background-color: var(--main-color);;
   padding: 12px;
   height: 48px;
-  margin-top: 8px;
+  margin-top: 5px;
   color: white;
   border-radius: 8px;
 }
