@@ -1,25 +1,39 @@
 import React from 'react'
 import styles from '../../styles/ListingCard.module.css'
+import timeAgo from '../../utils/dateUtils.ts'
+import type { Listing } from '../../types/listing';
 
 type ListingCard = {
-    profilePicture_url: string | undefined
+    profilephoto_url: string | undefined
     username: string 
     image_url: string | undefined
     name: string
     price: string
     condition: string
     size: string
+    created_at: string
+    onClick: () => void
 }
 
-export default function ListingCard({ profilePicture_url, username, image_url, name, price, condition, size }: ListingCard) {
+export default function ListingCard({ 
+    profilephoto_url, 
+    username, 
+    image_url, 
+    name, 
+    price, 
+    condition, 
+    size, 
+    created_at,
+    onClick
+}: ListingCard) {
     return(
-        <div className={styles.MainContainer}>
+        <div className={styles.MainContainer} onClick={onClick} style={{ cursor: 'pointer' }}>
             <div className={styles.ContentContainer}>
                 <div className={styles.ProfileContainer}>
-                    <img src={`http://localhost:3000${profilePicture_url}`} className={styles.ProfilePicture} />
+                    <img src={`http://localhost:3000${profilephoto_url}`} className={styles.ProfilePicture} />
                     <div className={styles.ProfileDetails}>
                         <h2>{username}</h2>
-                        <h3>2 years ago</h3>
+                        <h3>{timeAgo(created_at)}</h3>
                     </div>
                 </div>
                 <img src={`http://localhost:3000${image_url}`} className={styles.ListingImage} />

@@ -17,12 +17,12 @@ router.patch('/profile-photo', authenticate, upload.single('profilePhoto'), asyn
   }
   const id = req.user!.id;
 
-  const profilePhotoUrl = `/uploads/${req.file.filename}`; 
+  const profilePhoto_url = `/uploads/${req.file.filename}`; 
 
   try {
     const result = await pool.query(
       `UPDATE users SET image_url = $1 WHERE id = $2 RETURNING id, image_url`,
-      [profilePhotoUrl, id]
+      [profilePhoto_url, id]
     );
 
     res.json({ message: 'Profile photo updated', user: result.rows[0] });

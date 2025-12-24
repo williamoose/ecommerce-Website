@@ -15,16 +15,17 @@ const listings = [
                 <div className={styles.ListingContainer}>
                     {listings.map(listing => {
                         return (
-                            <ListingCard
+                            /* <ListingCard
                             key={listing.id}
-                            profilePicture={listing.profilePicture}
+                            // profilePicture={listing.profilePicture}
                             username={listing.username}
-                            image={listing.image}
+                            // image={listing.image}
                             name={listing.name}
                             price={listing.price}
                             condition={listing.condition}
                             size={listing.size}
-                            />
+                            /> */
+                            null
                         )
                     })}
                 </div>

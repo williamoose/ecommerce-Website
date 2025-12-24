@@ -38,11 +38,37 @@ router.get('/discover', async (req, res) => {
             l.size,
             l.condition,
             l.image_url,
+            l.created_at,
             u.username,
-            u.image_url
+            u.image_url AS profilephoto_url
         FROM listings l
         INNER JOIN users u ON l.user_id = u.id
         ORDER BY RANDOM()`    
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch listings' });
+  }
+});
+
+// GET newArrivals listings
+router.get('/new-arrivals', async (req, res) => {
+  try {
+    const result = await pool.query(
+        `SELECT 
+            l.id,
+            l.name,
+            l.price,
+            l.size,
+            l.condition,
+            l.image_url,
+            l.created_at,
+            u.username,
+            u.image_url AS profilephoto_url
+        FROM listings l
+        INNER JOIN users u ON l.user_id = u.id
+        ORDER BY l.created_at DESC`   
     );
     res.json(result.rows);
   } catch (err) {

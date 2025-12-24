@@ -3,14 +3,7 @@ import BeachFashion from '../assets/BeachFashion.jpg'
 import { useNavigate } from "react-router";
 import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/MyListings.module.css'
-
-type Listing = {
-    id: number
-    name: string
-    price: string
-    size: string
-    image_url: string
-}
+import type { Listing } from '../types/listing';
 
 export default function MyListings() {
     const [listings, setListings] = useState<Listing[]>([]);

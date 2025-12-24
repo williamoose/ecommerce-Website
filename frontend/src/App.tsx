@@ -12,6 +12,8 @@ import Sell from './screens/Sell'
 import MyLikedListings from './screens/MyLikedListings';
 import NavigationTabs from './components/ui/NavigationTabs';
 import Discover from './screens/Discover';
+import NewArrivals from './screens/NewArrivals';
+import ListingPage from './screens/ListingPage';
 
 function App() {
     return (
@@ -20,16 +22,18 @@ function App() {
                 <Routes>
                     // Public Routes
                     <Route index element={<SignIn />} />
-                    <Route path="/SignUp" element={<SignUp />} />
-                    <Route path="/SignIn" element={<SignIn />} />
+                    <Route path="/signUp" element={<SignUp />} />
+                    <Route path="/signIn" element={<SignIn />} />
 
                     // Protected Routes
                     <Route element={<ProtectedRoute />}>
                         <Route element={<ProtectedLayout />}>
-                            <Route path="/Discover" element={<Discover />} />
-                            <Route path="/MyListings" element={<MyListings />} />
-                            <Route path="/Sell" element={<Sell />} />
-                            <Route path="/MyLikedListings" element={<MyLikedListings />} />
+                            <Route path="/discover" element={<Discover />} />
+                            <Route path="/new-arrivals" element={<NewArrivals />} />
+                            <Route path="/my-listings" element={<MyListings />} />
+                            <Route path="/sell" element={<Sell />} />
+                            <Route path="/my-liked-listings" element={<MyLikedListings />} />
+                            <Route path="/listing/:id" element={<ListingPage />} />
                         </Route>
                     </Route>
                 </Routes>

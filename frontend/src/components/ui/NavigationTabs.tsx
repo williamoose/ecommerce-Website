@@ -18,24 +18,24 @@ export default function NavigationTabs() {
     return(
         <div className={styles.NavigationTabsContainer}>
             <img className={styles.Logo} src={Logo} alt="Logo" />
-            <button className={styles.Sections} onClick={() => navigate('/Discover')}>Discover</button>
-            <button className={styles.Sections}>New Arrivals</button>
+            <button className={styles.Sections} onClick={() => navigate('/discover')}>Discover</button>
+            <button className={styles.Sections} onClick={() => navigate('/new-arrivals')}>New Arrivals</button>
             <button className={styles.Sections}>Categories</button>
             <div className={styles.SearchBarContainer}>
                 <CgSearch className={styles.SearchIcon}/>
                 <input className={styles.SearchBar} placeholder="search" />
             </div>
             <div className={styles.IconsContainer}>
-                <button className={styles.Icon} onClick={() => navigate('/MyListings')}>
+                <button className={styles.Icon} onClick={() => navigate('/My-listings')}>
                     <CgProfile />
                 </button> 
-                <button className={styles.Icon} onClick={() => navigate('/MyLikedListings')}>
+                <button className={styles.Icon} onClick={() => navigate('/My-liked-listings')}>
                     <CgHeart />
                 </button>
                 <button className={styles.Icon}>
                     <CgShoppingCart />
                 </button>
-                <button className={styles.SellButton} onClick={() => navigate('/Sell')}>Sell</button>
+                <button className={styles.SellButton} onClick={() => navigate('/sell')}>Sell</button>
                 <button
                 className={`${styles.Icon} ${styles.LogoutIcon}`}
                 onClick={handleLogout}

@@ -4,7 +4,7 @@ import ListingCard from '../components/ui/ListingCard'
 import { useNavigate } from "react-router";
 import type { Listing } from '../types/listing';
 
-export default function Discover() {
+export default function NewArrivals() {
     const [listings, setListings] = useState<Listing[]>([]);
     
     const navigate = useNavigate();
@@ -12,18 +12,18 @@ export default function Discover() {
     useEffect(() => {
         const fetchListings = async () => {
             try {
-                const res = await fetch('http://localhost:3000/api/listings/discover');
+                const res = await fetch('http://localhost:3000/api/listings/new-arrivals');
 
                 if (!res.ok) {
-                    throw new Error('Failed to fetch discover listings');
+                    throw new Error('Failed to fetch newArrivals listings');
                 }
 
                 const data = await res.json();
                 console.log(data);
                 setListings(data);
-                console.log('Successfully fetched discover listings');
+                console.log('Successfully fetched newArrivals listings');
             } catch (error) {
-                console.error('Error fetching discover listings:', error);       
+                console.error('Error fetching newArrivals listings:', error);       
             }
         }
         
@@ -33,7 +33,7 @@ export default function Discover() {
     return(
         <div className={styles.MainContainer}>
             <div className={styles.ContentContainer}>
-                <h1>Hidden gems picked for you!</h1>
+                <h1>Fresh finds just dropped!</h1>
                 <div className={styles.ListingContainer}>
                     {listings.map(listing => {
                         console.log('profilephoto_url:', listing.profilephoto_url)
@@ -48,7 +48,7 @@ export default function Discover() {
                             condition={listing.condition}
                             size={listing.size}
                             created_at={listing.created_at}
-                            onClick={() => navigate(`/listing/${listing.id}`, { state: { listing } })}
+                            onClick={() => navigate(`/listing/${listing.id}`)}
                             />
                         )
                     })}

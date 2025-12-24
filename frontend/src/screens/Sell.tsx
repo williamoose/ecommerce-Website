@@ -67,7 +67,7 @@ export default function Sell() {
         const data = await response.json();
         console.log('Listing created:', data);
 
-        navigate('/MyListings');
+        navigate('/my-listings');
     };
 
     return (

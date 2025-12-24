@@ -37,7 +37,7 @@ export default function SignIn() {
         
         login(data.token, data.user);
 
-        navigate("/MyListings");
+        navigate("/my-listings");
 
         console.log('User signed in successfully:', data);
     }
@@ -66,7 +66,7 @@ export default function SignIn() {
                     </h4>
                     <button 
                         className={styles.RedirectToSignIn}
-                        onClick={() => navigate('/SignUp')}
+                        onClick={() => navigate('/signUp')}
                     >
                     Sign Up
                     </button>
