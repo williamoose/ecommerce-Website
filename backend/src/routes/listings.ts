@@ -27,7 +27,7 @@ router.get('/mylistings', authenticate, async (req: AuthenticatedRequest, res) =
   }
 })
 
-// GET discover listings
+// GET Discover listings
 router.get('/discover', async (req, res) => {
   try {
     const result = await pool.query(
@@ -52,7 +52,7 @@ router.get('/discover', async (req, res) => {
   }
 });
 
-// GET newArrivals listings
+// GET NewArrivals listings
 router.get('/new-arrivals', async (req, res) => {
   try {
     const result = await pool.query(
@@ -82,7 +82,6 @@ router.post('/mylistings', authenticate, upload.array('images', 5), async (req: 
   if (!req.user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-  const id = req.user!.id;
 
   const { 
     category,
@@ -110,5 +109,80 @@ router.post('/mylistings', authenticate, upload.array('images', 5), async (req: 
     res.status(500).json({ error: 'Failed to create listing' });
   }
 });
+
+// GET liked listings for logged-in user
+router.get('/liked', authenticate, async (req: AuthenticatedRequest, res) => {
+  if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
+
+  const id = req.user.id;
+
+  try {
+    const result = await pool.query(
+      `SELECT 
+         l.id,
+         l.name,
+         l.price,
+         l.size,
+         l.condition,
+         l.image_url,
+         l.created_at,
+         u.username,
+         u.image_url AS profilephoto_url
+       FROM listings l
+       JOIN likes lk ON lk.listing_id = l.id
+       JOIN users u ON l.user_id = u.id
+       WHERE lk.user_id = $1
+       ORDER BY lk.created_at DESC`,
+      [id]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch liked listings' });
+  }
+});
+
+// POST like a listing
+router.post('/:id/like', authenticate, async (req: AuthenticatedRequest, res) => {
+  if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
+
+  const id = req.user.id;
+  const listingId = req.params.id;
+
+  try {
+    await pool.query(
+      `INSERT INTO likes (user_id, listing_id) VALUES ($1, $2)
+       ON CONFLICT DO NOTHING`,
+      [id, listingId]
+    );
+
+    res.json({ message: 'Liked listing' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to like listing' });
+  }
+});
+
+// DELETE unlike a listing
+router.delete('/:id/like', authenticate, async (req: AuthenticatedRequest, res) => {
+  if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
+
+  const id = req.user.id;
+  const listingId = req.params.id;
+
+  try {
+    await pool.query(
+      `DELETE FROM likes WHERE user_id = $1 AND listing_id = $2`,
+      [id, listingId]
+    );
+
+    res.json({ message: 'Unliked listing' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to unlike listing' });
+  }
+});
+
 
 export default router;

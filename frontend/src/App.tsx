@@ -14,6 +14,7 @@ import NavigationTabs from './components/ui/NavigationTabs';
 import Discover from './screens/Discover';
 import NewArrivals from './screens/NewArrivals';
 import ListingPage from './screens/ListingPage';
+import Cart from './screens/Cart';
 
 function App() {
     return (
@@ -34,6 +35,7 @@ function App() {
                             <Route path="/sell" element={<Sell />} />
                             <Route path="/my-liked-listings" element={<MyLikedListings />} />
                             <Route path="/listing/:id" element={<ListingPage />} />
+                            <Route path="/cart" element={<Cart />} />
                         </Route>
                     </Route>
                 </Routes>

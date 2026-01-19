@@ -9,7 +9,6 @@ export default function MyListings() {
     const [listings, setListings] = useState<Listing[]>([]);
     const [newProfilePhoto, setNewProfilePhoto] = useState<string>('');
     
-    const navigate = useNavigate();
     const { user } = useAuth();
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -70,9 +69,11 @@ export default function MyListings() {
                         Authorization: `Bearer ${token}`
                     },
                 });
+
                 if (!res.ok) {
                     throw new Error('Failed to fetch listings');
                 }
+
                 const data = await res.json();
                 setListings(data);
                 console.log('Successfully fetched listings');
