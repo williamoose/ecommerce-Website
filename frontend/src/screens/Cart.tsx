@@ -39,7 +39,7 @@ export default function MyCart() {
             setCartItems(prev =>
                 inCart ? prev.filter(item => item.id !== listingId) : prev
             )
-            if (!inCart) fetchCart() // refresh cart
+            if (!inCart) fetchCart()
         } catch (err) {
             console.error(err)
         }

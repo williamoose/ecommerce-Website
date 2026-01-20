@@ -15,31 +15,38 @@ import Discover from './screens/Discover';
 import NewArrivals from './screens/NewArrivals';
 import ListingPage from './screens/ListingPage';
 import Cart from './screens/Cart';
+import CategoryPage from './screens/CategoryPage';
+import SearchPage from './screens/SearchPage';
+import { UserDataProvider } from './contexts/UserDataContext';
 
 function App() {
     return (
         <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    // Public Routes
-                    <Route index element={<SignIn />} />
-                    <Route path="/signUp" element={<SignUp />} />
-                    <Route path="/signIn" element={<SignIn />} />
+            <UserDataProvider>
+                <BrowserRouter>
+                    <Routes>
+                        // Public Routes
+                        <Route index element={<SignIn />} />
+                        <Route path="/signUp" element={<SignUp />} />
+                        <Route path="/signIn" element={<SignIn />} />
 
-                    // Protected Routes
-                    <Route element={<ProtectedRoute />}>
-                        <Route element={<ProtectedLayout />}>
-                            <Route path="/discover" element={<Discover />} />
-                            <Route path="/new-arrivals" element={<NewArrivals />} />
-                            <Route path="/my-listings" element={<MyListings />} />
-                            <Route path="/sell" element={<Sell />} />
-                            <Route path="/my-liked-listings" element={<MyLikedListings />} />
-                            <Route path="/listing/:id" element={<ListingPage />} />
-                            <Route path="/cart" element={<Cart />} />
+                        // Protected Routes
+                        <Route element={<ProtectedRoute />}>
+                            <Route element={<ProtectedLayout />}>
+                                <Route path="/discover" element={<Discover />} />
+                                <Route path="/new-arrivals" element={<NewArrivals />} />
+                                <Route path="/my-listings" element={<MyListings />} />
+                                <Route path="/sell" element={<Sell />} />
+                                <Route path="/my-liked-listings" element={<MyLikedListings />} />
+                                <Route path="/listing/:id" element={<ListingPage />} />
+                                <Route path="/cart" element={<Cart />} />
+                                <Route path="/category/:categoryName" element={<CategoryPage />} />
+                                <Route path="/search" element={<SearchPage />} />
+                            </Route>
                         </Route>
-                    </Route>
-                </Routes>
-            </BrowserRouter>
+                    </Routes>
+                </BrowserRouter>
+            </UserDataProvider>
         </AuthProvider>
     )
 }

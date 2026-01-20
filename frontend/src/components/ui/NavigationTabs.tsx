@@ -1,18 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../../assets/Logo.png'
-import { CgProfile, CgHeart, CgShoppingCart, CgSearch, CgLogOut } from "react-icons/cg";
+import { CgProfile, CgHeart, CgShoppingCart, CgSearch } from "react-icons/cg";
+import { IoChatbubbleOutline } from "react-icons/io5";
+import { HiOutlineBellAlert } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom"
-import { useAuth } from '../../contexts/AuthContext';
 import styles from '../../styles/NavigationTabs.module.css'
 
 export default function NavigationTabs() {
 
-    const { logout } = useAuth();
     let navigate = useNavigate();
 
-    const handleLogout = () => {
-        logout();
-        navigate('/SignIn');
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && searchQuery.trim() !== '') {
+            navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+        }
     }
 
     return(
@@ -24,34 +27,42 @@ export default function NavigationTabs() {
                 <button className={styles.Sections}>Categories</button>
 
                 <div className={styles.Dropdown}>
-                    <button onClick={() => navigate('/category/men')}>Men</button>
-                    <button onClick={() => navigate('/category/women')}>Women</button>
-                    <button onClick={() => navigate('/category/shoes')}>Shoes</button>
-                    <button onClick={() => navigate('/category/accessories')}>Accessories</button>
+                    <button onClick={() => navigate('/category/dresses')}>Dresses</button>
+                    <button onClick={() => navigate('/category/skirts')}>Skirts</button>
+                    <button onClick={() => navigate('/category/pants')}>Pants</button>
+                    <button onClick={() => navigate('/category/shirts')}>Shirts</button>
+                    <button onClick={() => navigate('/category/socks')}>Socks</button>
+                    <button onClick={() => navigate('/category/underwear')}>Underwear</button>
+                    <button onClick={() => navigate('/category/jackets')}>Jackets</button>
                 </div>
-            </div>
+            </div>            
             <div className={styles.SearchBarContainer}>
                 <CgSearch className={styles.SearchIcon}/>
-                <input className={styles.SearchBar} placeholder="search" />
+                <input
+                    className={styles.SearchBar}
+                    placeholder="search"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    onKeyDown={handleSearch} 
+                />
             </div>
             <div className={styles.IconsContainer}>
-                <button className={styles.Icon} onClick={() => navigate('/My-listings')}>
+                <button className={styles.Icon} onClick={() => navigate('/my-listings')}>
                     <CgProfile />
                 </button> 
-                <button className={styles.Icon} onClick={() => navigate('/My-liked-listings')}>
+                <button className={styles.Icon} onClick={() => navigate('/my-liked-listings')}>
                     <CgHeart />
                 </button>
                 <button className={styles.Icon} onClick={() => navigate('/cart')}>
                     <CgShoppingCart />
                 </button>
-                <button className={styles.SellButton} onClick={() => navigate('/sell')}>Sell</button>
-                <button
-                className={`${styles.Icon} ${styles.LogoutIcon}`}
-                onClick={handleLogout}
-                >
-                    <CgLogOut />
+                <button className={styles.Icon}>
+                    <HiOutlineBellAlert />
                 </button>
-
+                <button className={styles.Icon}>
+                    <IoChatbubbleOutline />
+                </button>
+                <button className={styles.SellButton} onClick={() => navigate('/Sell')}>Sell</button>
             </div>
         </div>
     )

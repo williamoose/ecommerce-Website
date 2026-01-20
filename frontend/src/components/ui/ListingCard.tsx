@@ -1,7 +1,8 @@
 import React from 'react'
 import styles from '../../styles/ListingCard.module.css'
 import timeAgo from '../../utils/dateUtils.ts'
-import type { Listing } from '../../types/listing';
+import { IoIosHeartEmpty, IoMdHeart } from "react-icons/io";
+import { IoCartOutline, IoCartSharp } from "react-icons/io5";
 
 type ListingCardProps = {
     profilephoto_url: string | undefined
@@ -53,28 +54,30 @@ export default function ListingCard({
                     <p>{condition}</p>
                     <p>Size: {size}</p>
                 </div>
-                {onLikeToggle && (
-                    <button 
-                        className={styles.LikeButton} 
-                        onClick={(e) => {
-                            e.stopPropagation()  // prevent triggering card click
-                            onLikeToggle()
-                        }}
-                    >
-                        {isLiked ? '❤️' : '🤍'}
-                    </button>
-                )}
-                {onCartToggle && (
-                    <button
-                        className={styles.CartButton}
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            onCartToggle()
-                        }}
-                    >
-                        {inCart ? "🛒 In Cart" : "➕ Add to Cart"}
-                    </button>
-                )}
+                <div className={styles.ButtonsContainer}>
+                    {onLikeToggle && (
+                        <button 
+                            className={styles.LikeButton} 
+                            onClick={(e) => {
+                                e.stopPropagation()  
+                                onLikeToggle()
+                            }}
+                        >
+                            {isLiked ? <IoMdHeart /> : <IoIosHeartEmpty />}
+                        </button>
+                    )}
+                    {onCartToggle && (
+                        <button
+                            className={styles.CartButton}
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                onCartToggle()
+                            }}
+                        >
+                            {inCart ? <IoCartOutline /> : <IoCartSharp />}
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     )

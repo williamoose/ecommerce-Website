@@ -3,14 +3,15 @@ import styles from '../styles/MyLikedListings.module.css'
 import ListingCard from '../components/ui/ListingCard'
 import { useNavigate } from "react-router";
 import type { Listing } from '../types/listing';
+import { useUserData } from '../contexts/UserDataContext';
 
 export default function Discover() {
     const [listings, setListings] = useState<Listing[]>([])
-    const [likedIds, setLikedIds] = useState<number[]>([])
-    const [cartIds, setCartIds] = useState<number[]>([])
     const navigate = useNavigate()
 
     const token = localStorage.getItem('token')
+
+    const { likedIds, setLikedIds, cartIds, setCartIds } = useUserData();
 
     // Fetch discover listings
     useEffect(() => {
@@ -48,6 +49,28 @@ export default function Discover() {
 
         fetchCart()
     }, [token])
+
+    // Fetch liked listings for the logged-in user
+    useEffect(() => {
+        if (!token) return;
+
+        const fetchLikes = async () => {
+            try {
+                const res = await fetch('http://localhost:3000/api/listings/liked', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Failed to fetch likes');
+
+                const data: Listing[] = await res.json();
+                setLikedIds(data.map(item => item.id)); 
+            } catch (error) {
+                console.error('Error fetching likes:', error);
+            }
+        };
+
+        fetchLikes();
+    }, [token]);
+
 
     // Toggle like/unlike
     const handleToggleLike = async (listingId: number) => {

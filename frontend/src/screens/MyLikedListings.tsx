@@ -97,8 +97,8 @@ export default function MyLikedListings() {
                         condition={listing.condition}
                         size={listing.size}
                         created_at={listing.created_at}
-                        isLiked={likedIds.includes(listing.id)} // pass current liked status
-                        onLikeToggle={() => handleToggleLike(listing.id)} // handle toggle
+                        isLiked={likedIds.includes(listing.id)} 
+                        onLikeToggle={() => handleToggleLike(listing.id)} 
                         onClick={() =>
                             navigate(`/listing/${listing.id}`, {
                                 state: { listing },

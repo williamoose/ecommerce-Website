@@ -27,6 +27,62 @@ router.get('/mylistings', authenticate, async (req: AuthenticatedRequest, res) =
   }
 })
 
+// GET listings by category
+router.get('/category/:category', async (req, res) => {
+  const { category } = req.params;
+
+  try {
+    const result = await pool.query(
+      `SELECT 
+          l.id,
+          l.name,
+          l.price,
+          l.size,
+          l.condition,
+          l.image_url,
+          l.created_at,
+          u.username,
+          u.image_url AS profilephoto_url
+       FROM listings l
+       INNER JOIN users u ON l.user_id = u.id
+       WHERE LOWER(l.category) = LOWER($1)
+       ORDER BY l.created_at DESC`,
+      [category]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch category listings' });
+  }
+});
+
+// GET listings by name (search)
+router.get('/search', async (req, res) => {
+  const { q } = req.query; 
+
+  if (!q || typeof q !== 'string') return res.status(400).json({ error: 'Missing query' });
+
+  try {
+    const result = await pool.query(
+      `SELECT 
+          l.id, l.name, l.price, l.size, l.condition, l.image_url, l.created_at,
+          u.username, u.image_url AS profilephoto_url
+       FROM listings l
+       JOIN users u ON l.user_id = u.id
+       WHERE LOWER(l.name) LIKE LOWER($1)
+       ORDER BY l.created_at DESC`,
+      [`%${q}%`] // partial match
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch listings' });
+  }
+});
+
+
 // GET Discover listings
 router.get('/discover', async (req, res) => {
   try {
@@ -183,6 +239,5 @@ router.delete('/:id/like', authenticate, async (req: AuthenticatedRequest, res) 
     res.status(500).json({ error: 'Failed to unlike listing' });
   }
 });
-
 
 export default router;
