@@ -1,10 +1,22 @@
 export default function timeAgo(isoDate: string) {
+  if (!isoDate) return 'unknown date';
+  
   const now = new Date();
   const past = new Date(isoDate);
+  
+  // Check if date is invalid
+  if (isNaN(past.getTime())) {
+    return 'unknown date';
+  }
+  
   const seconds = Math.floor((now.getTime() - past.getTime()) / 1000);
 
+  if (seconds < 0) {
+    return 'just now'; // handle future dates
+  }
+  
   if (seconds < 60) {
-    return `${seconds} seconds ago`;
+    return seconds === 0 ? 'just now' : `${seconds} seconds ago`;
   }
 
   const minutes = Math.floor(seconds / 60);

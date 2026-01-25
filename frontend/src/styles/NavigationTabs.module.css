@@ -5,77 +5,150 @@
     gap: 10px;
     background-color: white;
     width: 100vw;
-    border-bottom: 1px solid rgb(240, 240, 240);
+    border-bottom: 1px solid #e0e0e0;
     z-index: 1000;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .Logo {
     margin: 0px 50px 0px 80px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    color: var(--main-color);
+    font-size: 18px;
 }
 
 .Sections {
     background-color: white;
-    color: var(--main-color);
-    font-weight: bold;
+    color: #666;
+    font-weight: 600;
+    font-size: 15px;
     border: none;
     box-shadow: none;
     flex-grow: 1;
     border-radius: 0px;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
 }
 
 .Sections:hover {
-    background-color: var(--main-color);
-    color: white;
+    background-color: transparent;
+    color: var(--main-color);
     border-radius: 0px;
-    margin: 2px 0px 2px 0px
+    margin: 0;
 }
 
 .SearchBarContainer {
     display: flex;
-    background-color: lightgray;
-    padding: 12px;
-    margin: 6px 6px 6px 20px;
+    background-color: #f5f5f5;
+    padding: 8px 14px;
+    margin: 8px 6px 8px 20px;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
+}
+
+.SearchBarContainer:focus-within {
+    background-color: white;
+    border-color: var(--main-color);
+    box-shadow: 0 0 0 2px rgba(90, 109, 87, 0.1);
 }
 
 .SearchIcon {
-    height: 20px;
-    width: 20px;
-    color: var(--main-color);
+    height: 18px;
+    width: 18px;
+    color: #999;
+    flex-shrink: 0;
 }
 
 .SearchBarContainer .SearchBar {
     border: 0px;
     outline: 0px;
-    font-size: medium;
-    background-color: lightgray;
-    color: var(--main-color);
+    font-size: 14px;
+    background-color: transparent;
+    color: #222;
+    width: 200px;
+}
+
+.SearchBarContainer .SearchBar::placeholder {
+    color: #999;
 }
 
 .IconsContainer {
     background-color: white;
     display: flex;
-    gap: 35px;
+    gap: 30px;
     margin: 0px 80px 0px auto;
     padding-left: 50px;
     align-items: center;
-    font-size: 25px;
+    font-size: 22px;
 }
 
 .Icon {
     background-color: white;
     border: none;
-    color: var(--main-color);
-    font-size: 1em;
+    color: #666;
+    font-size: 1.15em;
     font-weight: 500;
-    padding: 0px
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
 .Icon:hover {
-    background-color: white;
-    color: var(--darker-main-color);
+    background-color: #f5f5f5;
+    color: var(--main-color);
+}
+
+@media (max-width: 1024px) {
+    .Logo {
+        margin-left: 40px;
+        margin-right: 30px;
+    }
+
+    .IconsContainer {
+        margin-right: 40px;
+        gap: 20px;
+        padding-left: 30px;
+    }
+
+    .SearchBarContainer .SearchBar {
+        width: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .Logo {
+        margin-left: 20px;
+        margin-right: 15px;
+        font-size: 16px;
+    }
+
+    .Sections {
+        padding: 4px 8px;
+        font-size: 14px;
+    }
+
+    .IconsContainer {
+        margin-right: 20px;
+        gap: 15px;
+        padding-left: 20px;
+    }
+
+    .SearchBarContainer {
+        margin-left: 10px;
+        padding: 6px 10px;
+    }
+
+    .SearchBarContainer .SearchBar {
+        width: 120px;
+        font-size: 13px;
+    }
 }
 
 .LogoutIcon {

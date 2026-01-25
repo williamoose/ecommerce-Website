@@ -1,23 +1,58 @@
 .MainContainer {
-    background-color: white;
+    background-color: #fafafa;
     max-width: 100vw;
     width: 100%;
+    min-height: 100vh;
     overflow-y: scroll;
 }
 
 .ContentContainer {
-    margin: calc(var(--navigation-tabs-height) + 30px) 6.5% 0 6.5%;
+    margin: calc(var(--navigation-tabs-height) + 30px) 8% 0 8%;
+    padding-bottom: 60px;
 }
 
 h1 {
-    font-size: 30px;
+    font-size: 32px;
     font-weight: 700;
-    color: var(--main-color)
+    color: var(--main-color);
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 20px;
 }
 
 .ListingContainer {
     padding: 20px 0 40px 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    align-items: start;
+}
+
+@media (max-width: 1024px) {
+    .ListingContainer {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ContentContainer {
+        margin-left: 4%;
+        margin-right: 4%;
+    }
+    
+    .ListingContainer {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+    }
+    
+    .ListingContainer {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

@@ -100,8 +100,6 @@ export default function Sell() {
                             <div key={index} className={styles.IndividualPhoto}>
                                 <img 
                                 src={URL.createObjectURL(photoURL)}
-                                width='100%'
-                                height='100%'
                                 alt={`preview-${index}`}
                                 />  
                             </div>

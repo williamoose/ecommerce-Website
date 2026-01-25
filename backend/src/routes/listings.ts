@@ -6,7 +6,7 @@ import { upload } from "../upload/multer.js";
 
 const router = express.Router();
 
-// GET user listings
+// GET user listings - MUST come before /:id
 router.get('/mylistings', authenticate, async (req: AuthenticatedRequest, res) => {
   if (!req.user) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -16,7 +16,22 @@ router.get('/mylistings', authenticate, async (req: AuthenticatedRequest, res) =
 
   try {
     const result = await pool.query(
-      'SELECT id, name, price, size, brand, description, image_url FROM listings WHERE user_id = $1 ORDER BY id DESC',
+      `SELECT 
+          l.id,
+          l.name,
+          l.price,
+          l.size,
+          l.brand,
+          l.condition,
+          l.description,
+          l.image_url,
+          l.created_at,
+          u.username,
+          u.image_url AS profilephoto_url
+       FROM listings l
+       INNER JOIN users u ON l.user_id = u.id
+       WHERE l.user_id = $1 
+       ORDER BY l.id DESC`,
       [id]
     );
 
@@ -27,7 +42,86 @@ router.get('/mylistings', authenticate, async (req: AuthenticatedRequest, res) =
   }
 })
 
-// GET listings by category
+// GET Discover listings - MUST come before /:id
+router.get('/discover', async (req, res) => {
+  try {
+    const result = await pool.query(
+        `SELECT 
+            l.id,
+            l.name,
+            l.brand,
+            l.price,
+            l.size,
+            l.condition,
+            l.description,
+            l.image_url,
+            l.created_at,
+            u.username,
+            u.image_url AS profilephoto_url
+        FROM listings l
+        INNER JOIN users u ON l.user_id = u.id
+        ORDER BY RANDOM()`    
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch listings' });
+  }
+});
+
+// GET NewArrivals listings - MUST come before /:id
+router.get('/new-arrivals', async (req, res) => {
+  try {
+    const result = await pool.query(
+        `SELECT 
+            l.id,
+            l.name,
+            l.brand,
+            l.price,
+            l.size,
+            l.condition,
+            l.description,
+            l.image_url,
+            l.created_at,
+            u.username,
+            u.image_url AS profilephoto_url
+        FROM listings l
+        INNER JOIN users u ON l.user_id = u.id
+        ORDER BY l.created_at DESC`   
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch listings' });
+  }
+});
+
+// GET listings by name (search) - MUST come before /:id
+router.get('/search', async (req, res) => {
+  const { q } = req.query; 
+
+  if (!q || typeof q !== 'string') return res.status(400).json({ error: 'Missing query' });
+
+  try {
+    const result = await pool.query(
+      `SELECT 
+          l.id, l.name, l.brand, l.price, l.size, l.condition, l.description, l.image_url, l.created_at, 
+          u.username, u.image_url AS profilephoto_url
+       FROM listings l
+       JOIN users u ON l.user_id = u.id
+       WHERE LOWER(l.name) LIKE LOWER($1)
+       ORDER BY l.created_at DESC`,
+      [`%${q}%`] // partial match
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch listings' });
+  }
+});
+
+// GET listings by category - MUST come before /:id
 router.get('/category/:category', async (req, res) => {
   const { category } = req.params;
 
@@ -40,6 +134,7 @@ router.get('/category/:category', async (req, res) => {
           l.size,
           l.brand,
           l.condition,
+          l.description,
           l.image_url,
           l.created_at,
           u.username,
@@ -58,81 +153,73 @@ router.get('/category/:category', async (req, res) => {
   }
 });
 
-// GET listings by name (search)
-router.get('/search', async (req, res) => {
-  const { q } = req.query; 
+// GET liked listings for logged-in user - MUST come before /:id
+router.get('/liked', authenticate, async (req: AuthenticatedRequest, res) => {
+  if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
 
-  if (!q || typeof q !== 'string') return res.status(400).json({ error: 'Missing query' });
+  const id = req.user.id;
 
   try {
     const result = await pool.query(
       `SELECT 
-          l.id, l.name, l.brand, l.price, l.size, l.condition, l.image_url, l.created_at, 
-          u.username, u.image_url AS profilephoto_url
+         l.id,
+         l.name,
+         l.brand,
+         l.price,
+         l.size,
+         l.condition,
+         l.description,
+         l.image_url,
+         l.created_at,
+         u.username,
+         u.image_url AS profilephoto_url
        FROM listings l
+       JOIN likes lk ON lk.listing_id = l.id
        JOIN users u ON l.user_id = u.id
-       WHERE LOWER(l.name) LIKE LOWER($1)
-       ORDER BY l.created_at DESC`,
-      [`%${q}%`] // partial match
+       WHERE lk.user_id = $1
+       ORDER BY lk.created_at DESC`,
+      [id]
     );
 
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to fetch listings' });
+    res.status(500).json({ error: 'Failed to fetch liked listings' });
   }
 });
 
+// GET single listing by ID - MUST be after all specific routes
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
 
-// GET Discover listings
-router.get('/discover', async (req, res) => {
   try {
     const result = await pool.query(
-        `SELECT 
-            l.id,
-            l.name,
-            l.brand,
-            l.price,
-            l.size,
-            l.condition,
-            l.image_url,
-            l.created_at,
-            u.username,
-            u.image_url AS profilephoto_url
-        FROM listings l
-        INNER JOIN users u ON l.user_id = u.id
-        ORDER BY RANDOM()`    
+      `SELECT 
+          l.id,
+          l.name,
+          l.price,
+          l.size,
+          l.brand,
+          l.condition,
+          l.description,
+          l.image_url,
+          l.created_at,
+          u.username,
+          u.image_url AS profilephoto_url
+       FROM listings l
+       INNER JOIN users u ON l.user_id = u.id
+       WHERE l.id = $1`,
+      [id]
     );
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to fetch listings' });
-  }
-});
 
-// GET NewArrivals listings
-router.get('/new-arrivals', async (req, res) => {
-  try {
-    const result = await pool.query(
-        `SELECT 
-            l.id,
-            l.name,
-            l.brand,
-            l.price,
-            l.size,
-            l.condition,
-            l.image_url,
-            l.created_at,
-            u.username,
-            u.image_url AS profilephoto_url
-        FROM listings l
-        INNER JOIN users u ON l.user_id = u.id
-        ORDER BY l.created_at DESC`   
-    );
-    res.json(result.rows);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Listing not found' });
+    }
+
+    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to fetch listings' });
+    res.status(500).json({ error: 'Failed to fetch listing' });
   }
 });
 
@@ -166,40 +253,6 @@ router.post('/mylistings', authenticate, upload.array('images', 5), async (req: 
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to create listing' });
-  }
-});
-
-// GET liked listings for logged-in user
-router.get('/liked', authenticate, async (req: AuthenticatedRequest, res) => {
-  if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
-
-  const id = req.user.id;
-
-  try {
-    const result = await pool.query(
-      `SELECT 
-         l.id,
-         l.name,
-         l.brand,
-         l.price,
-         l.size,
-         l.condition,
-         l.image_url,
-         l.created_at,
-         u.username,
-         u.image_url AS profilephoto_url
-       FROM listings l
-       JOIN likes lk ON lk.listing_id = l.id
-       JOIN users u ON l.user_id = u.id
-       WHERE lk.user_id = $1
-       ORDER BY lk.created_at DESC`,
-      [id]
-    );
-
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to fetch liked listings' });
   }
 });
 

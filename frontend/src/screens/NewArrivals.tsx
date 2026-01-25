@@ -48,7 +48,7 @@ export default function NewArrivals() {
                             condition={listing.condition}
                             size={listing.size}
                             created_at={listing.created_at}
-                            onClick={() => navigate(`/listing/${listing.id}`)}
+                            onClick={() => navigate(`/listing/${listing.id}`, { state: { listing } })}
                             />
                         )
                     })}

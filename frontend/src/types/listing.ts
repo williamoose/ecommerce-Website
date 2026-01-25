@@ -6,6 +6,7 @@ export type Listing = {
   condition: string;
   brand: string;
   created_at: string;
+  description?: string | undefined;
   image_url?: string | undefined; 
   profilephoto_url?: string | undefined; 
   username: string;

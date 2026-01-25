@@ -1,5 +1,5 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import type { Listing } from '../types/listing';
 import timeAgo from '../utils/dateUtils';
 import styles from '../styles/ListingPage.module.css';
@@ -7,18 +7,47 @@ import { useUserData } from '../contexts/UserDataContext';
 
 const ListingPage = () => {
     const location = useLocation();
-    const { listing } = location.state as { listing: Listing };
-    const { cartIds, setCartIds } = useUserData(); // use context for cart
+    const { id } = useParams<{ id: string }>();
+    const [listing, setListing] = useState<Listing | null>(location.state?.listing || null);
+    const [loading, setLoading] = useState(!listing);
+    const { cartIds, setCartIds } = useUserData();
+
+    // Fetch full listing data if not passed via state or to ensure we have description
+    useEffect(() => {
+        const fetchListing = async () => {
+            if (!id) return;
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/listings/${id}`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch listing');
+                }
+                
+                const data = await response.json();
+                setListing(data);
+            } catch (err) {
+                console.error('Error fetching listing:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchListing();
+    }, [id]);
+
     console.log('Listing data:', listing);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     if (!listing) {
         return <div>No listing data</div>;
     }
 
-    // Check if listing is in cart
     const inCart = cartIds.includes(listing.id);
 
-    // Toggle listing in cart
     const handleCartToggle = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -35,7 +64,6 @@ const ListingPage = () => {
                 },
             });
 
-            // Update cartIds in context
             setCartIds(prev =>
                 inCart
                     ? prev.filter(id => id !== listing.id)
@@ -49,6 +77,7 @@ const ListingPage = () => {
     return (
         <div className={styles.MainContainer}>
             <div className={styles.ContentContainer}>
+                {/* Left - Image */}
                 <div className={styles.left}>
                     <img
                         src={`http://localhost:3000${listing.image_url}`}
@@ -56,24 +85,57 @@ const ListingPage = () => {
                         className={styles.image}
                     />
                 </div>
+
+                {/* Right - Product Info & Details */}
                 <div className={styles.right}>
-                    <div className={styles.mainInformation}>
-                        <h6 className={styles.posted}>{timeAgo(listing.created_at)}</h6>
-                        <h1 className={styles.title}>{listing.name}</h1>
-                        <h3 className={styles.brand}>Brand: {listing.brand || 'No brand'}</h3>
-                        <p className={styles.price}>S${listing.price}</p>
-                    </div>
+                    {/* Posted Time */}
+                    <p className={styles.posted}>Posted {timeAgo(listing.created_at)}</p>
+
+                    {/* Brand */}
+                    <p className={styles.brand}>{listing.brand || 'Unknown Brand'}</p>
+
+                    {/* Title */}
+                    <h1 className={styles.title}>{listing.name}</h1>
+
+                    {/* Price */}
+                    <p className={styles.price}>${listing.price}</p>
+
+                    {/* Add to Cart Button */}
                     <button
                         className={styles.addToCartButton}
                         onClick={handleCartToggle}
                     >
                         {inCart ? 'Remove from Cart' : 'Add to Cart'}
                     </button>
-                    <hr className={styles.divider} />
-                    <div className={styles.AdditionalInformation}>
-                        <p className={styles.condition}>Condition: {listing.condition}</p>
-                        <p className={styles.size}>Size: {listing.size}</p>
+
+                    {/* Divider */}
+                    <div className={styles.divider}></div>
+
+                    {/* Product Details Section */}
+                    <div className={styles.detailsSection}>
+                        <h3 className={styles.sectionTitle}>Product Details</h3>
+                        <div className={styles.detailsGrid}>
+                            <div className={styles.detailItem}>
+                                <span className={styles.detailLabel}>Condition</span>
+                                <span className={styles.detailValue}>{listing.condition}</span>
+                            </div>
+                            <div className={styles.detailItem}>
+                                <span className={styles.detailLabel}>Size</span>
+                                <span className={styles.detailValue}>{listing.size}</span>
+                            </div>
+                        </div>
                     </div>
+
+                    {/* Description Section */}
+                    {listing.description && (
+                        <>
+                            <div className={styles.divider}></div>
+                            <div className={styles.descriptionSection}>
+                                <h3 className={styles.sectionTitle}>About this item</h3>
+                                <p className={styles.descriptionText}>{listing.description}</p>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
