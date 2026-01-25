@@ -16,7 +16,7 @@ router.get('/mylistings', authenticate, async (req: AuthenticatedRequest, res) =
 
   try {
     const result = await pool.query(
-      'SELECT id, name, price, size, description, image_url FROM listings WHERE user_id = $1 ORDER BY id DESC',
+      'SELECT id, name, price, size, brand, description, image_url FROM listings WHERE user_id = $1 ORDER BY id DESC',
       [id]
     );
 
@@ -38,6 +38,7 @@ router.get('/category/:category', async (req, res) => {
           l.name,
           l.price,
           l.size,
+          l.brand,
           l.condition,
           l.image_url,
           l.created_at,
@@ -66,7 +67,7 @@ router.get('/search', async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT 
-          l.id, l.name, l.price, l.size, l.condition, l.image_url, l.created_at,
+          l.id, l.name, l.brand, l.price, l.size, l.condition, l.image_url, l.created_at, 
           u.username, u.image_url AS profilephoto_url
        FROM listings l
        JOIN users u ON l.user_id = u.id
@@ -90,6 +91,7 @@ router.get('/discover', async (req, res) => {
         `SELECT 
             l.id,
             l.name,
+            l.brand,
             l.price,
             l.size,
             l.condition,
@@ -115,6 +117,7 @@ router.get('/new-arrivals', async (req, res) => {
         `SELECT 
             l.id,
             l.name,
+            l.brand,
             l.price,
             l.size,
             l.condition,
@@ -177,6 +180,7 @@ router.get('/liked', authenticate, async (req: AuthenticatedRequest, res) => {
       `SELECT 
          l.id,
          l.name,
+         l.brand,
          l.price,
          l.size,
          l.condition,

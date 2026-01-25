@@ -1,72 +1,72 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import ListingCard from '../components/ui/ListingCard'
 import { useNavigate } from 'react-router'
+import { useUserData } from '../contexts/UserDataContext'
 import type { Listing } from '../types/listing'
+import styles from '../styles/Cart.module.css'
 
-export default function MyCart() {
-    const [cartItems, setCartItems] = useState<Listing[]>([])
+interface MyCartProps {
+  allListings: Listing[]; // pass all listings so we can filter by cartIds
+}
+
+export default function MyCart({ allListings }: MyCartProps) {
+    const { cartIds, setCartIds } = useUserData()
     const navigate = useNavigate()
 
-    const fetchCart = async () => {
+    // Filter listings that are in cart
+    const cartItems = allListings.filter(listing => cartIds.includes(listing.id))
+
+    const handleCartToggle = async (listingId: number) => {
         const token = localStorage.getItem('token')
         if (!token) return
 
-        try {
-            const res = await fetch('http://localhost:3000/api/cart', {
-                headers: { Authorization: `Bearer ${token}` },
-            })
-            if (!res.ok) throw new Error('Failed to fetch cart')
-            const data = await res.json()
-            setCartItems(data)
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
-    useEffect(() => {
-        fetchCart()
-    }, [])
-
-    const handleCartToggle = async (listingId: number, inCart: boolean) => {
-        const token = localStorage.getItem('token')
-        if (!token) return
+        const inCart = cartIds.includes(listingId)
 
         try {
             await fetch(`http://localhost:3000/api/cart/${listingId}`, {
                 method: inCart ? 'DELETE' : 'POST',
                 headers: { Authorization: `Bearer ${token}` },
             })
-            setCartItems(prev =>
-                inCart ? prev.filter(item => item.id !== listingId) : prev
+
+            // Update context state
+            setCartIds(prev =>
+                inCart ? prev.filter(id => id !== listingId) : [...prev, listingId]
             )
-            if (!inCart) fetchCart()
-        } catch (err) {
+            } catch (err) {
             console.error(err)
         }
     }
 
-    return (
-        <div>
-            <h1>My Cart</h1>
-            <div>
-                {cartItems.map(listing => (
-                    <ListingCard
-                    key={listing.id}
-                    profilephoto_url={listing.profilephoto_url}
-                    username={listing.username}
-                    image_url={listing.image_url}
-                    name={listing.name}
-                    price={listing.price}
-                    condition={listing.condition}
-                    size={listing.size}
-                    created_at={listing.created_at}
-                    inCart={true}
-                    onCartToggle={() => handleCartToggle(listing.id, true)}
-                    onClick={() =>
-                        navigate(`/listing/${listing.id}`, { state: { listing } })
-                    }
-                    />
-                ))}
+  return (
+        <div className={styles.MainContainer}>
+            <div className={styles.ContentContainer}>
+                <h1>Shopping Cart</h1>
+                <div className={styles.ListingContainer}>
+                    <div className={styles.ItemContainer}>
+                        {cartItems.map(cartItem => (
+                            <ListingCard
+                                key={cartItem.id}
+                                profilephoto_url={cartItem.profilephoto_url}
+                                username={cartItem.username}
+                                image_url={cartItem.image_url}
+                                name={cartItem.name}
+                                price={cartItem.price}
+                                condition={cartItem.condition}
+                                size={cartItem.size}
+                                created_at={cartItem.created_at}
+                                isLiked={cartItem.includes(cartItem.id)}
+                                onLikeToggle={() => handleToggleLike(cartItem.id)}
+                                inCart={cartIds.includes(cartItem.id)}
+                                onCartToggle={() =>
+                                    handleCartToggle(cartItem.id, cartIds.includes(cartItem.id))
+                                }
+                                onClick={() =>
+                                    navigate(`/listing/${cartItem.id}`, { state: { cartItem } })
+                                }
+                            />
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     )

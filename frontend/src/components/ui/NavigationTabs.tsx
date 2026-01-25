@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import Logo from '../../assets/Logo.png'
 import { CgProfile, CgHeart, CgShoppingCart, CgSearch } from "react-icons/cg";
-import { IoChatbubbleOutline } from "react-icons/io5";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom"
 import styles from '../../styles/NavigationTabs.module.css'
 
@@ -55,12 +53,6 @@ export default function NavigationTabs() {
                 </button>
                 <button className={styles.Icon} onClick={() => navigate('/cart')}>
                     <CgShoppingCart />
-                </button>
-                <button className={styles.Icon}>
-                    <HiOutlineBellAlert />
-                </button>
-                <button className={styles.Icon}>
-                    <IoChatbubbleOutline />
                 </button>
                 <button className={styles.SellButton} onClick={() => navigate('/Sell')}>Sell</button>
             </div>

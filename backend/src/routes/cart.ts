@@ -16,6 +16,7 @@ router.get("/", authenticate, async (req: AuthenticatedRequest, res) => {
                 ci.quantity,
                 l.id AS listing_id,
                 l.name,
+                l.brand,
                 l.price,
                 l.size,
                 l.condition,
