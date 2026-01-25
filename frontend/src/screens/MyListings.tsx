@@ -8,6 +8,7 @@ import type { Listing } from '../types/listing';
 export default function MyListings() {
     const [listings, setListings] = useState<Listing[]>([]);
     const [newProfilePhoto, setNewProfilePhoto] = useState<string>('');
+    const [showProfileModal, setShowProfileModal] = useState(false);
     
     const { user } = useAuth();
 
@@ -88,6 +89,32 @@ export default function MyListings() {
 
     return(
         <div className={styles.MainContainer}>
+            {showProfileModal && (
+                <div className={styles.ModalOverlay} onClick={() => setShowProfileModal(false)}>
+                    <div className={styles.Modal} onClick={(e) => e.stopPropagation()}>
+                        <button className={styles.CloseButton} onClick={() => setShowProfileModal(false)}>✕</button>
+                        <h2 className={styles.ModalTitle}>Profile Details</h2>
+                        <div className={styles.ModalContent}>
+                            <div className={styles.DetailRow}>
+                                <span className={styles.DetailLabel}>First Name:</span>
+                                <span className={styles.DetailValue}>{user?.firstName || 'N/A'}</span>
+                            </div>
+                            <div className={styles.DetailRow}>
+                                <span className={styles.DetailLabel}>Last Name:</span>
+                                <span className={styles.DetailValue}>{user?.lastName || 'N/A'}</span>
+                            </div>
+                            <div className={styles.DetailRow}>
+                                <span className={styles.DetailLabel}>Username:</span>
+                                <span className={styles.DetailValue}>{user?.username || 'N/A'}</span>
+                            </div>
+                            <div className={styles.DetailRow}>
+                                <span className={styles.DetailLabel}>Email:</span>
+                                <span className={styles.DetailValue}>{user?.email || 'N/A'}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className={styles.ContentContainer}>
                 <div className={styles.ProfileContainer}>
                     <div className={styles.ProfilePhotoContainer}>
@@ -115,7 +142,7 @@ export default function MyListings() {
                     </div>
                     <div className={styles.ProfileText}>
                         <div className={styles.Username}>{user?.username || 'user'}</div>
-                        <button className={styles.ViewProfileButton}>
+                        <button className={styles.ViewProfileButton} onClick={() => setShowProfileModal(true)}>
                             Profile Details ▼
                         </button>
                     </div>
