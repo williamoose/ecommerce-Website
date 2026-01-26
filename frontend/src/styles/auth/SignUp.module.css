@@ -29,9 +29,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   color: gray;
   margin-right: 12%;
+  max-width: 420px;
 }
 
 .ImageContainer {
@@ -47,24 +48,26 @@
   padding: 12px;
   border: 1px solid black;
   border-radius: 8px;
-  width: 392px;
-  height: 20px;
+  width: 100%;
+  max-width: 392px;
   background-color: white;
   color: black;
+  box-sizing: border-box;
 }
 
 .PasswordInputWrapper {
   position: relative;
-  width: 404px;
-  flex-direction: row;
+  width: 100%;
+  max-width: 392px;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  padding-left: 0px;
+  padding-left: 0;
 }
 
 .PasswordInputWrapper .Input {
-  border: none;
+  border: 1px solid black;
   box-shadow: none;
 }
 

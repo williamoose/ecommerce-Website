@@ -113,12 +113,10 @@ export default function MyCart() {
                 <h1>Shopping Cart</h1>
                 
                 <div className={styles.CartLayout}>
-                    {/* Items Section */}
                     <div className={styles.ItemsSection}>
                         <div className={styles.CartItems}>
                             {cartItems.map(item => (
                                 <div key={item.cart_item_id} className={styles.CartItemRow}>
-                                    {/* Product Image */}
                                     <div className={styles.ItemImage}>
                                         <img 
                                             src={`http://localhost:3000${item.image_url}`} 
@@ -127,7 +125,6 @@ export default function MyCart() {
                                         />
                                     </div>
 
-                                    {/* Product Details */}
                                     <div className={styles.ItemDetails}>
                                         <h3 className={styles.ItemName}>{item.name}</h3>
                                         <p className={styles.ItemBrand}>{item.brand}</p>
@@ -146,14 +143,12 @@ export default function MyCart() {
                                         </div>
                                     </div>
 
-                                    {/* Quantity and Price */}
                                     <div className={styles.ItemControls}>
                                         <p className={styles.ItemPrice}>
                                             ${parseFloat(item.price).toFixed(2)}
                                         </p>
                                     </div>
 
-                                    {/* Remove Button */}
                                     <button
                                         className={styles.RemoveBtn}
                                         onClick={() => handleRemoveItem(item.listing_id)}
@@ -166,7 +161,6 @@ export default function MyCart() {
                         </div>
                     </div>
 
-                    {/* Order Summary */}
                     <div className={styles.OrderSummary}>
                         <h2>Order Summary</h2>
                         

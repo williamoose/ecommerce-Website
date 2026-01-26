@@ -12,7 +12,7 @@ const ListingPage = () => {
     const [loading, setLoading] = useState(!listing);
     const { cartIds, setCartIds } = useUserData();
 
-    // Fetch full listing data if not passed via state or to ensure we have description
+    // Fetch full listing data if not passed via state 
     useEffect(() => {
         const fetchListing = async () => {
             if (!id) return;
@@ -77,7 +77,6 @@ const ListingPage = () => {
     return (
         <div className={styles.MainContainer}>
             <div className={styles.ContentContainer}>
-                {/* Left - Image */}
                 <div className={styles.left}>
                     <img
                         src={`http://localhost:3000${listing.image_url}`}
@@ -86,21 +85,15 @@ const ListingPage = () => {
                     />
                 </div>
 
-                {/* Right - Product Info & Details */}
                 <div className={styles.right}>
-                    {/* Posted Time */}
                     <p className={styles.posted}>Posted {timeAgo(listing.created_at)}</p>
 
-                    {/* Brand */}
                     <p className={styles.brand}>{listing.brand || 'Unknown Brand'}</p>
 
-                    {/* Title */}
                     <h1 className={styles.title}>{listing.name}</h1>
 
-                    {/* Price */}
                     <p className={styles.price}>${listing.price}</p>
 
-                    {/* Add to Cart Button */}
                     <button
                         className={styles.addToCartButton}
                         onClick={handleCartToggle}
@@ -108,10 +101,8 @@ const ListingPage = () => {
                         {inCart ? 'Remove from Cart' : 'Add to Cart'}
                     </button>
 
-                    {/* Divider */}
                     <div className={styles.divider}></div>
 
-                    {/* Product Details Section */}
                     <div className={styles.detailsSection}>
                         <h3 className={styles.sectionTitle}>Product Details</h3>
                         <div className={styles.detailsGrid}>
@@ -126,7 +117,6 @@ const ListingPage = () => {
                         </div>
                     </div>
 
-                    {/* Description Section */}
                     {listing.description && (
                         <>
                             <div className={styles.divider}></div>

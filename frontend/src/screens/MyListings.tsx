@@ -3,12 +3,14 @@ import BeachFashion from '../assets/BeachFashion.jpg'
 import { useNavigate } from "react-router";
 import { useAuth } from '../contexts/AuthContext';
 import styles from '../styles/MyListings.module.css'
-import type { Listing } from '../types/listing';
+import type { Listing } from '../types/listing'
+import EditProfileModal from '../components/ui/EditProfileModal';
 
 export default function MyListings() {
     const [listings, setListings] = useState<Listing[]>([]);
     const [newProfilePhoto, setNewProfilePhoto] = useState<string>('');
     const [showProfileModal, setShowProfileModal] = useState(false);
+    const [showEditProfileModal, setShowEditProfileModal] = useState(false);
     
     const { user } = useAuth();
 
@@ -89,6 +91,10 @@ export default function MyListings() {
 
     return(
         <div className={styles.MainContainer}>
+            <EditProfileModal 
+                isOpen={showEditProfileModal}
+                onClose={() => setShowEditProfileModal(false)}
+            />
             {showProfileModal && (
                 <div className={styles.ModalOverlay} onClick={() => setShowProfileModal(false)}>
                     <div className={styles.Modal} onClick={(e) => e.stopPropagation()}>
@@ -146,7 +152,7 @@ export default function MyListings() {
                             Profile Details ▼
                         </button>
                     </div>
-                    <button className={styles.EditProfile}>Edit Profile</button>
+                    <button className={styles.EditProfile} onClick={() => setShowEditProfileModal(true)}>Edit Profile</button>
                 </div>
                 <div className={styles.ListingsHeader}>Listings</div>
                 <div className={styles.ListingsContainer}>

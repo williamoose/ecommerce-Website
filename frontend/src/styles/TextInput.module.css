@@ -1,10 +1,12 @@
 .Input {
     border: 1px solid black;
     border-radius: 8px;
-    width: 392px;
+    width: 100%;
     background-color: white;
     color: black;
     box-sizing: border-box;
+    font-family: inherit;
+    font-size: 14px;
 }
 
 h2 {
@@ -21,15 +23,15 @@ h2 {
     font-size: 16px;
     border: 1px solid lightgray;
     border-radius: 5px;
-    padding-left: 1.2em;
+    padding: 12px;
     white-space: normal;
     overflow-wrap: break-word;
 }
 
 .auth {
-    box-sizing: content-box;
+    box-sizing: border-box;
     padding: 12px;
-    height: 20px;
+    height: 45px;
 }
 
 .price {
@@ -41,6 +43,7 @@ h2 {
     font-size: 16px;
     resize: vertical;
     overflow: hidden;
+    min-height: 120px;
 }
 
 ::placeholder {

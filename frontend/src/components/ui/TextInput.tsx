@@ -8,6 +8,7 @@ type InputProps = {
     onChange: (text: string) => void;
     purpose: 'auth' | 'sell';
     modifiers?: string;
+    placeholder?: string;
 }
 
 const HandleMultilineChange = (
@@ -19,17 +20,19 @@ const HandleMultilineChange = (
     onChange(event.target.value)
 }
 
-export default function TextInput({ multiline, inputType, value, onChange, purpose, modifiers }: InputProps) {
+export default function TextInput({ multiline, inputType, value, onChange, purpose, modifiers, placeholder }: InputProps) {
     return (
         !multiline ? 
         <input 
-        placeholder={value} 
+        placeholder={placeholder || value}
+        value={value}
         className={`${styles.Input} ${styles[purpose]} ${modifiers ? styles[modifiers] : ''}`} 
         type={inputType}
         onChange={(e) => onChange(e.target.value)}
         /> : 
         <textarea 
-        placeholder={value} 
+        placeholder={placeholder || value}
+        value={value}
         className={`${styles.Input} ${styles[purpose]} ${styles.Multiline}`} 
         onChange={(e) => HandleMultilineChange(e, onChange)}
         />

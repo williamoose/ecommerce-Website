@@ -62,27 +62,31 @@ export default function SignUp() {
                 Create Account
                 </h1>
                 <TextInput 
-                value={firstName || "First Name"}
+                value={firstName}
                 inputType={'text'} 
-                onChange={setFirstName} 
+                onChange={setFirstName}
+                placeholder="First Name"
                 purpose={'auth'}
                 />
                 <TextInput 
-                value={lastName || "Last Name"}
+                value={lastName}
                 inputType={'text'} 
-                onChange={setLastName} 
+                onChange={setLastName}
+                placeholder="Last Name"
                 purpose={'auth'}
                 />
                 <TextInput 
-                value={username || "Username"}
+                value={username}
                 inputType={'text'} 
-                onChange={setUsername} 
+                onChange={setUsername}
+                placeholder="Username"
                 purpose={'auth'}
                 />
                 <TextInput 
-                value={email || "Email"}
+                value={email}
                 inputType={'email'} 
-                onChange={setEmail} 
+                onChange={setEmail}
+                placeholder="Email"
                 purpose={'auth'}
                 />
                 <PasswordInput 

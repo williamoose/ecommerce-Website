@@ -53,9 +53,10 @@ export default function SignIn() {
                 Log In
                 </h1>
                 <TextInput 
-                value={email || "Email"}
+                value={email}
                 inputType={'email'} 
-                onChange={setEmail} 
+                onChange={setEmail}
+                placeholder="Email"
                 purpose={'auth'}/>
                 <PasswordInput input={'Password'} type={'password'} onChange={setPassword} />
                 <button className={styles.ForgotPasswordButton}>Forgot your password?</button>
